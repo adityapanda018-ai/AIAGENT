@@ -14,13 +14,20 @@ class VoiceEngineService {
 
   constructor() {
     if (typeof window !== 'undefined') {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        this.recognition = new SpeechRecognition();
-        this.recognition.continuous = true;
-        this.recognition.interimResults = true;
-        this.recognition.lang = 'en-US';
-        this.isSupported = true;
+      try {
+        if ('speechSynthesis' in window) {
+          this.synthesis = window.speechSynthesis;
+        }
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        if (SpeechRecognition) {
+          this.recognition = new SpeechRecognition();
+          this.recognition.continuous = true;
+          this.recognition.interimResults = true;
+          this.recognition.lang = 'en-US';
+          this.isSupported = true;
+        }
+      } catch (e) {
+        // Safe catch for speech API initialization
       }
     }
   }
