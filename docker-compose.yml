@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  # 1. WEB FRONTEND (Nginx + React Build)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - VITE_API_GATEWAY_URL=http://api-gateway:8000
+    depends_on:
+      - api-gateway
+    restart: always
+
+  # 2. API GATEWAY & REVERSE PROXY
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://nexus_user:nexus_password@postgres:5432/nexus_db
+      - REDIS_URL=redis://redis:6379/0
+      - ENVIRONMENT=production
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  # 3. RESEARCH ENGINE WORKERS
+  research-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    command: celery -A worker.celery_app worker -q research_queue --concurrency=4
+    environment:
+      - DATABASE_URL=postgresql://nexus_user:nexus_password@postgres:5432/nexus_db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  # 4. SPECIALIST ENGINE WORKERS (Apex, Nova, DataPulse, Vortex)
+  specialist-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    command: celery -A worker.celery_app worker -q specialist_queue --concurrency=4
+    environment:
+      - DATABASE_URL=postgresql://nexus_user:nexus_password@postgres:5432/nexus_db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  # 5. POSTGRESQL 16 + PGVECTOR DATABASE
+  postgres:
+    image: pgvector/pgvector:pg16
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=nexus_db
+      - POSTGRES_USER=nexus_user
+      - POSTGRES_PASSWORD=nexus_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  # 6. REDIS TASK BROKER & RATE LIMITER
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: always
+
+volumes:
+  postgres_data:
