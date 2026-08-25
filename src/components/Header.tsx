@@ -1,11 +1,14 @@
 import { type FC, useState, useEffect } from 'react';
 import { Cpu, Key, Network, ShieldCheck, Palette, Activity, Search, Share2, DollarSign, Command, Zap, Layers, Compass } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
+import type { UserProfile } from '../types/auth';
 import { SystemArchitectureModal } from './SystemArchitectureModal';
 import { FullSystemTestModal } from './FullSystemTestModal';
+import { UserProfileDropdown } from './UserProfileDropdown';
 
 interface HeaderProps {
   settings: ApiSettings;
+  userProfile: UserProfile;
   onOpenSettings: () => void;
   onOpenAgentBuilder: () => void;
   onOpenThemeModal: () => void;
@@ -17,10 +20,14 @@ interface HeaderProps {
   onOpenCircuitTopology: () => void;
   onOpenRunComparison: () => void;
   onOpenTour: () => void;
+  onOpenAuth: () => void;
+  onUpdateProfile: (updated: UserProfile) => void;
+  onSignOut: () => void;
 }
 
 export const Header: FC<HeaderProps> = (props) => {
   const {
+    userProfile,
     onOpenSettings,
     onOpenThemeModal,
     onOpenSimulator,
@@ -30,7 +37,10 @@ export const Header: FC<HeaderProps> = (props) => {
     onOpenCommandPalette,
     onOpenCircuitTopology,
     onOpenRunComparison,
-    onOpenTour
+    onOpenTour,
+    onOpenAuth,
+    onUpdateProfile,
+    onSignOut
   } = props;
 
   const [timeStr, setTimeStr] = useState<string>('');
@@ -221,6 +231,14 @@ export const Header: FC<HeaderProps> = (props) => {
           >
             <Key className="w-3.5 h-3.5 text-[#F59E0B]" />
           </button>
+
+          {/* User Profile, Role Switcher & Subscription Dropdown */}
+          <UserProfileDropdown
+            profile={userProfile}
+            onOpenAuth={onOpenAuth}
+            onUpdateProfile={onUpdateProfile}
+            onSignOut={onSignOut}
+          />
         </div>
       </div>
 

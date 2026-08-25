@@ -19,6 +19,7 @@ import { RunComparisonModal } from './components/RunComparisonModal';
 import { FloatingTelemetryDock } from './components/FloatingTelemetryDock';
 import { FullSystemTestModal } from './components/FullSystemTestModal';
 import { ProductTourModal } from './components/ProductTourModal';
+import { UserAuthModal } from './components/UserAuthModal';
 import { KnowledgeBase } from './components/KnowledgeBase';
 import { TemplateGallery } from './components/TemplateGallery';
 import { ValidationDashboard } from './components/ValidationDashboard';
@@ -30,8 +31,10 @@ import { SystemValidationView } from './components/SystemValidationView';
 import { MessagingIntegrationsView } from './components/MessagingIntegrationsView';
 import { isSoundEnabled, setSoundEnabled, playSwitchSound } from './services/soundFx';
 import { downloadBlob, generateJupyterNotebook, generateLatexPaper } from './services/exportGenerators';
+import { loadUserProfile, saveUserProfile, DEFAULT_GUEST_PROFILE } from './services/authStore';
 
 import type { Agent, ExecutionStep, Artifact, ApiSettings, NavTab, KnowledgeDocument } from './types/agent';
+import type { UserProfile } from './types/auth';
 import { DEFAULT_AGENTS, INITIAL_ARTIFACTS, DEFAULT_KNOWLEDGE } from './data/defaultData';
 import { executeAgentTask } from './services/agentEngine';
 
@@ -45,6 +48,9 @@ export function App() {
   const [artifacts, setArtifacts] = useState<Artifact[]>(INITIAL_ARTIFACTS);
   const [documents, setDocuments] = useState<KnowledgeDocument[]>(DEFAULT_KNOWLEDGE);
   const [isRunning, setIsRunning] = useState<boolean>(false);
+
+  const [userProfile, setUserProfile] = useState<UserProfile>(loadUserProfile());
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
   const [isAgentBuilderOpen, setIsAgentBuilderOpen] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
@@ -163,6 +169,22 @@ export function App() {
     localStorage.setItem('nexusai_hologram', 'false');
   };
 
+  const handleUpdateProfile = (updated: UserProfile) => {
+    setUserProfile(updated);
+    saveUserProfile(updated);
+  };
+
+  const handleSignOut = () => {
+    const guest: UserProfile = { ...DEFAULT_GUEST_PROFILE, isLoggedIn: false };
+    setUserProfile(guest);
+    saveUserProfile(guest);
+  };
+
+  const handleLoginSuccess = (profile: UserProfile) => {
+    setUserProfile(profile);
+    saveUserProfile(profile);
+  };
+
   const handleSaveSettings = (newSettings: ApiSettings) => {
     setSettings(newSettings);
     localStorage.setItem('nexusai_api_settings', JSON.stringify(newSettings));
@@ -253,6 +275,7 @@ export function App() {
       {/* 1. HEADER */}
       <Header
         settings={settings}
+        userProfile={userProfile}
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenAgentBuilder={() => setIsAgentBuilderOpen(true)}
         onOpenThemeModal={() => setIsThemeModalOpen(true)}
@@ -264,6 +287,9 @@ export function App() {
         onOpenCircuitTopology={() => setIsCircuitTopologyOpen(true)}
         onOpenRunComparison={() => setIsRunComparisonOpen(true)}
         onOpenTour={() => setIsTourOpen(true)}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onUpdateProfile={handleUpdateProfile}
+        onSignOut={handleSignOut}
       />
 
       {/* MAIN WORKSPACE GRID */}
@@ -539,6 +565,12 @@ export function App() {
         onOpenCircuitTopology={() => setIsCircuitTopologyOpen(true)}
         onOpenRunComparison={() => setIsRunComparisonOpen(true)}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+      />
+
+      <UserAuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
       />
     </div>
   );
