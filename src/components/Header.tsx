@@ -2,15 +2,11 @@ import { type FC, useState } from 'react';
 import { 
   Key, 
   Palette, 
-  Activity, 
-  Search, 
   Share2, 
-  DollarSign,
-  Zap, 
-  Layers, 
+  DollarSign, 
   Compass, 
-  Command,
-  ShieldCheck
+  Command, 
+  ShieldCheck 
 } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import type { UserProfile } from '../types/auth';
@@ -24,13 +20,9 @@ interface HeaderProps {
   onOpenSettings: () => void;
   onOpenAgentBuilder: () => void;
   onOpenThemeModal: () => void;
-  onOpenSimulator: () => void;
-  onOpenAcademicSearch: () => void;
   onOpenShareModal: () => void;
   onOpenTokenMeter: () => void;
   onOpenCommandPalette: () => void;
-  onOpenCircuitTopology: () => void;
-  onOpenRunComparison: () => void;
   onOpenTour: () => void;
   onOpenAuth: () => void;
   onUpdateProfile: (updated: UserProfile) => void;
@@ -41,13 +33,9 @@ export const Header: FC<HeaderProps> = ({
   userProfile,
   onOpenSettings,
   onOpenThemeModal,
-  onOpenSimulator,
-  onOpenAcademicSearch,
   onOpenShareModal,
   onOpenTokenMeter,
   onOpenCommandPalette,
-  onOpenCircuitTopology,
-  onOpenRunComparison,
   onOpenTour,
   onOpenAuth,
   onUpdateProfile,
@@ -78,45 +66,6 @@ export const Header: FC<HeaderProps> = ({
               Power Electronics Engineering Suite
             </span>
           </div>
-        </div>
-
-        {/* Center: Clean Segmented Engineering Workbenches */}
-        <div className="hidden md:flex items-center bg-[#161D27] border border-[#212936] p-1 rounded-md gap-1 font-mono text-xs shadow-inner">
-          <button
-            onClick={onOpenSimulator}
-            className="px-3 py-1 rounded text-[#CBD5E1] hover:text-[#38BDF8] hover:bg-[#0F141C] transition-all flex items-center gap-1.5 cursor-pointer text-[11px] font-medium"
-            title="Interactive Loss & Thermal Simulator"
-          >
-            <Activity className="w-3.5 h-3.5 text-[#38BDF8]" />
-            <span>Loss Simulator</span>
-          </button>
-
-          <button
-            onClick={onOpenCircuitTopology}
-            className="px-3 py-1 rounded text-[#CBD5E1] hover:text-[#F59E0B] hover:bg-[#0F141C] transition-all flex items-center gap-1.5 cursor-pointer text-[11px] font-medium"
-            title="Interactive 3-Level ANPC Circuit Schematic"
-          >
-            <Zap className="w-3.5 h-3.5 text-[#F59E0B]" />
-            <span>Circuit ANPC</span>
-          </button>
-
-          <button
-            onClick={onOpenRunComparison}
-            className="px-3 py-1 rounded text-[#CBD5E1] hover:text-[#10B981] hover:bg-[#0F141C] transition-all flex items-center gap-1.5 cursor-pointer text-[11px] font-medium"
-            title="Side-by-Side Run Comparison Diff Matrix"
-          >
-            <Layers className="w-3.5 h-3.5 text-[#10B981]" />
-            <span>Run Diff</span>
-          </button>
-
-          <button
-            onClick={onOpenAcademicSearch}
-            className="px-3 py-1 rounded text-[#CBD5E1] hover:text-[#818CF8] hover:bg-[#0F141C] transition-all flex items-center gap-1.5 cursor-pointer text-[11px] font-medium"
-            title="Academic IEEE DOI Search Connector"
-          >
-            <Search className="w-3.5 h-3.5 text-[#818CF8]" />
-            <span>Academic DOIs</span>
-          </button>
         </div>
 
         {/* Right: Quick Tools, Command Palette & User Profile */}

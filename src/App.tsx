@@ -279,13 +279,9 @@ export function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenAgentBuilder={() => setIsAgentBuilderOpen(true)}
         onOpenThemeModal={() => setIsThemeModalOpen(true)}
-        onOpenSimulator={() => setIsSimulatorOpen(true)}
-        onOpenAcademicSearch={() => setIsAcademicSearchOpen(true)}
         onOpenShareModal={() => setIsShareModalOpen(true)}
         onOpenTokenMeter={() => setIsTokenMeterOpen(true)}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
-        onOpenCircuitTopology={() => setIsCircuitTopologyOpen(true)}
-        onOpenRunComparison={() => setIsRunComparisonOpen(true)}
         onOpenTour={() => setIsTourOpen(true)}
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onUpdateProfile={handleUpdateProfile}
