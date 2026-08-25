@@ -1,5 +1,5 @@
-import { type FC,  useState  } from 'react';
-import { Play, Square, BookOpen, HelpCircle, GitBranch, Sparkles, Volume2, VolumeX } from 'lucide-react';
+import { type FC, useState } from 'react';
+import { Play, Square, BookOpen, HelpCircle, GitBranch, Sparkles } from 'lucide-react';
 import type { Agent, ExecutionStep } from '../types/agent';
 import { ClaimTraceDrawer } from './ClaimTraceDrawer';
 import { EvidenceLibraryModal } from './EvidenceLibraryModal';
@@ -8,8 +8,6 @@ import { WhyConclusionModal } from './WhyConclusionModal';
 import { EvidenceGraphModal } from './EvidenceGraphModal';
 import { QuestionAnalysisModal } from './QuestionAnalysisModal';
 import { resolveDomainEvidence } from '../services/evidenceDatabase';
-import { voiceEngine } from '../services/voiceService';
-import { PredictiveTextarea } from './PredictiveTextarea';
 
 interface ResearchDeskProps {
   selectedAgent: Agent;
@@ -38,7 +36,6 @@ export const ResearchDesk: FC<ResearchDeskProps> = ({
   const [activeGraphModal, setActiveGraphModal] = useState<boolean>(false);
   const [activeQuestionModal, setActiveQuestionModal] = useState<boolean>(false);
   const [selectedClaimId, setSelectedClaimId] = useState<string>('CLAIM C-014');
-  const [isSpeakingFindings, setIsSpeakingFindings] = useState<boolean>(false);
 
   const scopeOptions = ['Technical', 'Literature', 'Experimental', 'Market'];
 
@@ -46,17 +43,6 @@ export const ResearchDesk: FC<ResearchDeskProps> = ({
     setSelectedScope(prev => 
       prev.includes(scope) ? prev.filter(s => s !== scope) : [...prev, scope]
     );
-  };
-
-  const handleSpeakSummary = (textToSpeak?: string) => {
-    if (isSpeakingFindings) {
-      voiceEngine.stopSpeaking();
-      setIsSpeakingFindings(false);
-    } else {
-      setIsSpeakingFindings(true);
-      const speech = textToSpeak || `${domainData.domain} Investigation summary: ${domainData.recommendationText}. Key claims verified.`;
-      voiceEngine.speak(speech, () => setIsSpeakingFindings(false));
-    }
   };
 
   const handleStart = () => {
@@ -102,11 +88,12 @@ export const ResearchDesk: FC<ResearchDeskProps> = ({
           </span>
         </div>
 
-        <PredictiveTextarea
+        <textarea
           value={taskPrompt}
-          onChange={onPromptChange}
+          onChange={(e) => onPromptChange(e.target.value)}
           placeholder="Enter your technical research question... (e.g. Evaluate 3-level ANPC SiC MOSFET inverter efficiency at 10kHz PWM)"
-          minRows={3}
+          rows={3}
+          className="w-full bg-[#0F141C] border border-[#212936] rounded-sm p-3 text-xs text-[#F1F5F9] placeholder-[#94A3B8]/60 focus:outline-none focus:border-[#38BDF8] min-h-[80px] resize-y font-sans leading-relaxed"
         />
 
         <div className="flex flex-wrap items-center justify-between gap-2 pt-1 font-mono text-[11px]">
@@ -191,19 +178,6 @@ export const ResearchDesk: FC<ResearchDeskProps> = ({
             <h3 className="font-bold text-xs text-[#F59E0B] uppercase tracking-wider">FINDINGS & DECISION</h3>
             
             <div className="flex items-center gap-1.5 font-sans">
-              <button
-                onClick={() => handleSpeakSummary()}
-                className={`px-2 py-0.5 rounded-sm font-mono text-[9px] font-bold flex items-center gap-1 cursor-pointer transition-all ${
-                  isSpeakingFindings
-                    ? 'bg-[#10B981] text-[#0F141C] border border-[#10B981]'
-                    : 'bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981]/20 border border-[#10B981]/40'
-                }`}
-                title={isSpeakingFindings ? 'Stop Voice Readout' : 'Listen to AI Voice Findings Readout'}
-              >
-                {isSpeakingFindings ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
-                <span>{isSpeakingFindings ? '[ STOP AUDIO ]' : '[ LISTEN FINDINGS ]'}</span>
-              </button>
-
               <button
                 onClick={() => setActiveWhyModal(true)}
                 className="px-2 py-0.5 rounded-sm bg-[#38BDF8]/10 text-[#38BDF8] hover:bg-[#38BDF8]/20 border border-[#38BDF8]/40 font-mono text-[9px] font-bold flex items-center gap-1 cursor-pointer"

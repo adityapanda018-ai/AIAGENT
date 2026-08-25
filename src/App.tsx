@@ -137,11 +137,6 @@ export function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenAgentBuilder={() => setIsAgentBuilderOpen(true)}
         onRunDemoStep={handleRunDemoStep}
-        onRunPrompt={(promptText) => {
-          setTaskPrompt(promptText);
-          setActiveTab('dashboard');
-          handleStartInvestigation(promptText, ['Technical', 'Literature'], 'All', 'Detailed', 'Strict');
-        }}
       />
 
       {/* MAIN WORKSPACE GRID */}

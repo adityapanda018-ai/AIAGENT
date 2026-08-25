@@ -1,31 +1,23 @@
-import { type FC,  useState, useEffect  } from 'react';
-import { Cpu, Key, Database, Network, Info, Play, Palette, Mic } from 'lucide-react';
+import { type FC, useState, useEffect } from 'react';
+import { Cpu, Key, Database, Network, Info, Play, Palette } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import { SystemArchitectureModal } from './SystemArchitectureModal';
 import { WinningDemoScriptModal } from './WinningDemoScriptModal';
 import { FullSystemTestModal } from './FullSystemTestModal';
-import { VoiceAssistantModal } from './VoiceAssistantModal';
 
 interface HeaderProps {
   settings: ApiSettings;
   onOpenSettings: () => void;
   onOpenAgentBuilder: () => void;
   onRunDemoStep?: (stepIndex: number) => void;
-  onRunPrompt?: (promptText: string) => void;
 }
 
-export const Header: FC<HeaderProps> = ({
-  settings: _settings,
-  onOpenSettings,
-  onOpenAgentBuilder: _onOpenAgentBuilder,
-  onRunDemoStep = () => {},
-  onRunPrompt = () => {}
-}) => {
+export const Header: FC<HeaderProps> = (props) => {
+  const { onOpenSettings, onRunDemoStep } = props;
   const [timeStr, setTimeStr] = useState<string>('');
   const [isArchModalOpen, setIsArchModalOpen] = useState<boolean>(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
   const [isFullTestModalOpen, setIsFullTestModalOpen] = useState<boolean>(false);
-  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState<boolean>(false);
   const [currentTheme, setCurrentTheme] = useState<string>('dark');
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState<boolean>(false);
 
@@ -99,7 +91,7 @@ export const Header: FC<HeaderProps> = ({
 
         {/* Workstation Controls */}
         <div className="flex items-center gap-2 font-mono text-xs">
-          {/* User Specification: [RUN ALL TESTS] System Verification Button */}
+          {/* [RUN ALL TESTS] System Verification Button */}
           <button
             onClick={() => setIsFullTestModalOpen(true)}
             className="btn-primary py-1 px-3 text-[11px] bg-[#10B981] hover:bg-[#059669] text-[#0F141C] border-[#10B981] font-bold flex items-center gap-1 font-sans cursor-pointer"
@@ -109,7 +101,7 @@ export const Header: FC<HeaderProps> = ({
             <span>[ RUN ALL TESTS ]</span>
           </button>
 
-          {/* User Specification: [WINNING DEMO SCRIPT] Button */}
+          {/* [WINNING DEMO SCRIPT] Button */}
           <button
             onClick={() => setIsDemoModalOpen(true)}
             className="btn-secondary py-1 px-3 text-[11px] font-bold flex items-center gap-1 font-sans cursor-pointer"
@@ -117,16 +109,6 @@ export const Header: FC<HeaderProps> = ({
           >
             <Play className="w-3.5 h-3.5 fill-current text-[#38BDF8]" />
             <span>[ DEMO SCRIPT ]</span>
-          </button>
-
-          {/* Voice AI Assistant Button */}
-          <button
-            onClick={() => setIsVoiceModalOpen(true)}
-            className="btn-secondary py-1 px-3 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer bg-[#38BDF8]/10 text-[#38BDF8] border-[#38BDF8]/30 hover:bg-[#38BDF8]/20"
-            title="Open Hands-Free Voice AI Assistant"
-          >
-            <Mic className="w-3.5 h-3.5 text-[#38BDF8] animate-pulse" />
-            <span>[ VOICE AI ]</span>
           </button>
 
           <button
@@ -200,19 +182,15 @@ export const Header: FC<HeaderProps> = ({
       <WinningDemoScriptModal
         isOpen={isDemoModalOpen}
         onClose={() => setIsDemoModalOpen(false)}
-        onRunDemoStep={onRunDemoStep}
+        onRunDemoStep={onRunDemoStep || (() => {})}
       />
 
       <FullSystemTestModal
         isOpen={isFullTestModalOpen}
         onClose={() => setIsFullTestModalOpen(false)}
       />
-
-      <VoiceAssistantModal
-        isOpen={isVoiceModalOpen}
-        onClose={() => setIsVoiceModalOpen(false)}
-        onRunPrompt={onRunPrompt}
-      />
     </header>
   );
 };
+export default Header;
+
