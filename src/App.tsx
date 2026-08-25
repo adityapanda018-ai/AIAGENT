@@ -279,6 +279,9 @@ export function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenAgentBuilder={() => setIsAgentBuilderOpen(true)}
         onOpenThemeModal={() => setIsThemeModalOpen(true)}
+        onOpenAcademicSearch={() => setIsAcademicSearchOpen(true)}
+        onOpenCircuitTopology={() => setIsCircuitTopologyOpen(true)}
+        onOpenRunComparison={() => setIsRunComparisonOpen(true)}
         onOpenShareModal={() => setIsShareModalOpen(true)}
         onOpenTokenMeter={() => setIsTokenMeterOpen(true)}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
