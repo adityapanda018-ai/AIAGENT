@@ -12,7 +12,6 @@ import {
   BookOpen,
   Printer,
   AlertTriangle,
-  Info,
   HelpCircle,
   QrCode
 } from 'lucide-react';
@@ -34,7 +33,6 @@ export const ArtifactWorkspace: FC<ArtifactWorkspaceProps> = ({ artifacts }) => 
   const [codeRunOutput, setCodeRunOutput] = useState<CodeRunResult | null>(null);
   const [viewMode, setViewMode] = useState<'dossier' | 'raw'>('dossier');
   const [isWhyModalOpen, setIsWhyModalOpen] = useState(false);
-  const [isBannerDismissed, setIsBannerDismissed] = useState(false);
 
   const selectedArtifact = artifacts.find(a => a.id === activeArtifactId) || artifacts[artifacts.length - 1];
 
@@ -213,26 +211,6 @@ export const ArtifactWorkspace: FC<ArtifactWorkspaceProps> = ({ artifacts }) => 
         {viewMode === 'dossier' ? (
           /* User Specification: Phase 17 Professional 16-Section Research Dossier */
           <div className="bg-[#0F141C] border border-[#212936] rounded-sm p-6 space-y-5 text-xs font-sans text-[#F1F5F9] max-w-4xl mx-auto shadow-md">
-            {/* Honest Disclosure Banner */}
-            {!isBannerDismissed && (
-              <div className="p-2.5 bg-[#161D27] border border-[#F59E0B]/30 rounded-sm flex items-center justify-between font-mono text-[10px]">
-                <div className="flex items-center gap-2 text-[#CBD5E1]">
-                  <Info className="w-3.5 h-3.5 text-[#F59E0B]" />
-                  <span>Demonstration benchmark dataset used for interface validation.</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[#F59E0B] font-bold">DEMO VALIDATION MODE</span>
-                  <button
-                    onClick={() => setIsBannerDismissed(true)}
-                    className="text-[#94A3B8] hover:text-[#F1F5F9] text-[10px] font-mono px-1 py-0.5 rounded border border-[#212936] hover:bg-[#0F141C] cursor-pointer"
-                    title="Dismiss Notice"
-                  >
-                    ✕
-                  </button>
-                </div>
-              </div>
-            )}
-
             {/* Dossier Cover Header */}
             <div className="border-b border-[#212936] pb-4 space-y-2">
               <div className="flex items-center justify-between text-[10px] font-mono text-[#94A3B8]">

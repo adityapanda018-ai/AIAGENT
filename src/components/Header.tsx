@@ -1,8 +1,7 @@
 import { type FC, useState, useEffect } from 'react';
-import { Cpu, Key, Network, Info, Play, Palette, Activity, Search, Share2, DollarSign } from 'lucide-react';
+import { Cpu, Key, Network, ShieldCheck, Palette, Activity, Search, Share2, DollarSign } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import { SystemArchitectureModal } from './SystemArchitectureModal';
-import { WinningDemoScriptModal } from './WinningDemoScriptModal';
 import { FullSystemTestModal } from './FullSystemTestModal';
 
 interface HeaderProps {
@@ -14,7 +13,6 @@ interface HeaderProps {
   onOpenAcademicSearch: () => void;
   onOpenShareModal: () => void;
   onOpenTokenMeter: () => void;
-  onRunDemoStep?: (stepIndex: number) => void;
 }
 
 export const Header: FC<HeaderProps> = (props) => {
@@ -24,13 +22,11 @@ export const Header: FC<HeaderProps> = (props) => {
     onOpenSimulator,
     onOpenAcademicSearch,
     onOpenShareModal,
-    onOpenTokenMeter,
-    onRunDemoStep
+    onOpenTokenMeter
   } = props;
 
   const [timeStr, setTimeStr] = useState<string>('');
   const [isArchModalOpen, setIsArchModalOpen] = useState<boolean>(false);
-  const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
   const [isFullTestModalOpen, setIsFullTestModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -50,12 +46,12 @@ export const Header: FC<HeaderProps> = (props) => {
           </span>
           <span className="text-[#212936]">|</span>
           <span className="text-[#CBD5E1]">
-            INVESTIGATION <strong className="text-[#F59E0B]">0248</strong>
+            INVESTIGATION <strong className="text-[#38BDF8]">0248</strong>
           </span>
           <span className="text-[#212936]">|</span>
-          <span className="text-[#F59E0B] font-bold bg-[#F59E0B]/10 px-1.5 py-0.2 rounded-sm border border-[#F59E0B]/30 flex items-center gap-1 font-sans text-[10px]">
-            <Info className="w-3 h-3 text-[#F59E0B]" />
-            DEMO DATASET / VALIDATION RUN
+          <span className="text-[#10B981] font-bold bg-[#10B981]/10 px-1.5 py-0.2 rounded-sm border border-[#10B981]/30 flex items-center gap-1 font-sans text-[10px]">
+            <ShieldCheck className="w-3 h-3 text-[#10B981]" />
+            PRIMARY PRODUCTION WORKBENCH
           </span>
           <span className="text-[#212936]">|</span>
           <span className="text-[#CBD5E1]">
@@ -133,16 +129,6 @@ export const Header: FC<HeaderProps> = (props) => {
             <span>$0.034</span>
           </button>
 
-          {/* [WINNING DEMO SCRIPT] Button */}
-          <button
-            onClick={() => setIsDemoModalOpen(true)}
-            className="btn-secondary py-1 px-2.5 text-[11px] font-bold flex items-center gap-1 font-sans cursor-pointer"
-            title="Run Winning Judge Demo Script"
-          >
-            <Play className="w-3.5 h-3.5 fill-current text-[#38BDF8]" />
-            <span>[ DEMO ]</span>
-          </button>
-
           {/* [RUN ALL TESTS] System Verification Button */}
           <button
             onClick={() => setIsFullTestModalOpen(true)}
@@ -183,12 +169,6 @@ export const Header: FC<HeaderProps> = (props) => {
       <SystemArchitectureModal
         isOpen={isArchModalOpen}
         onClose={() => setIsArchModalOpen(false)}
-      />
-
-      <WinningDemoScriptModal
-        isOpen={isDemoModalOpen}
-        onClose={() => setIsDemoModalOpen(false)}
-        onRunDemoStep={onRunDemoStep || (() => {})}
       />
 
       <FullSystemTestModal

@@ -165,15 +165,6 @@ export function App() {
     setDocuments(prev => prev.filter(d => d.id !== id));
   };
 
-  const handleRunDemoStep = (stepIndex: number) => {
-    setActiveTab('dashboard');
-    if (stepIndex === 0) {
-      setTaskPrompt('Evaluate the feasibility of silicon carbide based multilevel inverters for 100 kW industrial applications.');
-    } else if (stepIndex === 1) {
-      handleStartInvestigation('Evaluate the feasibility of silicon carbide based multilevel inverters for 100 kW industrial applications.', ['Technical'], 'All', 'Detailed', 'Strict');
-    }
-  };
-
   return (
     <div 
       data-theme={theme}
@@ -191,7 +182,6 @@ export function App() {
         onOpenAcademicSearch={() => setIsAcademicSearchOpen(true)}
         onOpenShareModal={() => setIsShareModalOpen(true)}
         onOpenTokenMeter={() => setIsTokenMeterOpen(true)}
-        onRunDemoStep={handleRunDemoStep}
       />
 
       {/* MAIN WORKSPACE GRID */}
