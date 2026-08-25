@@ -7,6 +7,10 @@ import { ArtifactWorkspace } from './components/ArtifactWorkspace';
 import { AgentBuilderModal } from './components/AgentBuilderModal';
 import { SettingsModal } from './components/SettingsModal';
 import { ThemeCustomizerModal } from './components/ThemeCustomizerModal';
+import { InteractiveSimulatorModal } from './components/InteractiveSimulatorModal';
+import { AcademicSearchModal } from './components/AcademicSearchModal';
+import { ShareInvestigationModal } from './components/ShareInvestigationModal';
+import { TokenCostMeter } from './components/TokenCostMeter';
 import { KnowledgeBase } from './components/KnowledgeBase';
 import { TemplateGallery } from './components/TemplateGallery';
 import { ValidationDashboard } from './components/ValidationDashboard';
@@ -35,6 +39,11 @@ export function App() {
   const [isAgentBuilderOpen, setIsAgentBuilderOpen] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isThemeModalOpen, setIsThemeModalOpen] = useState<boolean>(false);
+  const [isSimulatorOpen, setIsSimulatorOpen] = useState<boolean>(false);
+  const [isAcademicSearchOpen, setIsAcademicSearchOpen] = useState<boolean>(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
+  const [isTokenMeterOpen, setIsTokenMeterOpen] = useState<boolean>(false);
+
   const [theme, setTheme] = useState<string>('dark');
   const [background, setBackground] = useState<string>('grid');
   const [highlight, setHighlight] = useState<string>('cyan');
@@ -177,6 +186,10 @@ export function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenAgentBuilder={() => setIsAgentBuilderOpen(true)}
         onOpenThemeModal={() => setIsThemeModalOpen(true)}
+        onOpenSimulator={() => setIsSimulatorOpen(true)}
+        onOpenAcademicSearch={() => setIsAcademicSearchOpen(true)}
+        onOpenShareModal={() => setIsShareModalOpen(true)}
+        onOpenTokenMeter={() => setIsTokenMeterOpen(true)}
         onRunDemoStep={handleRunDemoStep}
       />
 
@@ -335,6 +348,27 @@ export function App() {
         currentHighlight={highlight}
         onSelectHighlight={handleSelectHl}
         onResetDefaults={handleResetThemeDefaults}
+      />
+
+      <InteractiveSimulatorModal
+        isOpen={isSimulatorOpen}
+        onClose={() => setIsSimulatorOpen(false)}
+      />
+
+      <AcademicSearchModal
+        isOpen={isAcademicSearchOpen}
+        onClose={() => setIsAcademicSearchOpen(false)}
+        onIngestPaper={(newDoc) => handleAddDocument(newDoc)}
+      />
+
+      <ShareInvestigationModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+      />
+
+      <TokenCostMeter
+        isOpen={isTokenMeterOpen}
+        onClose={() => setIsTokenMeterOpen(false)}
       />
     </div>
   );

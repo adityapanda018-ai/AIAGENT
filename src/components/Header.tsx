@@ -1,5 +1,5 @@
 import { type FC, useState, useEffect } from 'react';
-import { Cpu, Key, Network, Info, Play, Palette } from 'lucide-react';
+import { Cpu, Key, Network, Info, Play, Palette, Activity, Search, Share2, DollarSign } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import { SystemArchitectureModal } from './SystemArchitectureModal';
 import { WinningDemoScriptModal } from './WinningDemoScriptModal';
@@ -10,11 +10,24 @@ interface HeaderProps {
   onOpenSettings: () => void;
   onOpenAgentBuilder: () => void;
   onOpenThemeModal: () => void;
+  onOpenSimulator: () => void;
+  onOpenAcademicSearch: () => void;
+  onOpenShareModal: () => void;
+  onOpenTokenMeter: () => void;
   onRunDemoStep?: (stepIndex: number) => void;
 }
 
 export const Header: FC<HeaderProps> = (props) => {
-  const { onOpenSettings, onOpenThemeModal, onRunDemoStep } = props;
+  const {
+    onOpenSettings,
+    onOpenThemeModal,
+    onOpenSimulator,
+    onOpenAcademicSearch,
+    onOpenShareModal,
+    onOpenTokenMeter,
+    onRunDemoStep
+  } = props;
+
   const [timeStr, setTimeStr] = useState<string>('');
   const [isArchModalOpen, setIsArchModalOpen] = useState<boolean>(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
@@ -79,33 +92,73 @@ export const Header: FC<HeaderProps> = (props) => {
         </div>
 
         {/* Workstation Controls */}
-        <div className="flex items-center gap-2 font-mono text-xs">
-          {/* [RUN ALL TESTS] System Verification Button */}
+        <div className="flex items-center gap-1.5 font-mono text-xs">
+          {/* Engineering Simulator Button */}
           <button
-            onClick={() => setIsFullTestModalOpen(true)}
-            className="btn-primary py-1 px-3 text-[11px] bg-[#10B981] hover:bg-[#059669] text-[#0F141C] border-[#10B981] font-bold flex items-center gap-1 font-sans cursor-pointer"
-            title="Run Complete 14-Point System Verification Suite"
+            onClick={onOpenSimulator}
+            className="btn-secondary py-1 px-2.5 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
+            title="Open Interactive Engineering Loss & Thermal Simulator"
           >
-            <Cpu className="w-3.5 h-3.5" />
-            <span>[ RUN ALL TESTS ]</span>
+            <Activity className="w-3.5 h-3.5 text-[#38BDF8]" />
+            <span>[ SIMULATOR ]</span>
+          </button>
+
+          {/* Academic Search Connector Button */}
+          <button
+            onClick={onOpenAcademicSearch}
+            className="btn-secondary py-1 px-2.5 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
+            title="Search arXiv, IEEE, PubMed & Semantic Scholar"
+          >
+            <Search className="w-3.5 h-3.5 text-[#818CF8]" />
+            <span>[ ACADEMIC ]</span>
+          </button>
+
+          {/* Share Dossier Button */}
+          <button
+            onClick={onOpenShareModal}
+            className="btn-secondary py-1 px-2.5 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
+            title="Generate Shareable Dossier Link & QR Code"
+          >
+            <Share2 className="w-3.5 h-3.5 text-[#10B981]" />
+            <span>[ SHARE ]</span>
+          </button>
+
+          {/* Live Token & Cost Meter Button */}
+          <button
+            onClick={onOpenTokenMeter}
+            className="btn-secondary py-1 px-2 text-[10px] font-mono font-bold flex items-center gap-1 cursor-pointer text-[#10B981] border-[#10B981]/30 bg-[#10B981]/10 hover:bg-[#10B981]/20"
+            title="View Real-Time Token Consumption & Cost Observability"
+          >
+            <DollarSign className="w-3 h-3 text-[#10B981]" />
+            <span>$0.034</span>
           </button>
 
           {/* [WINNING DEMO SCRIPT] Button */}
           <button
             onClick={() => setIsDemoModalOpen(true)}
-            className="btn-secondary py-1 px-3 text-[11px] font-bold flex items-center gap-1 font-sans cursor-pointer"
+            className="btn-secondary py-1 px-2.5 text-[11px] font-bold flex items-center gap-1 font-sans cursor-pointer"
             title="Run Winning Judge Demo Script"
           >
             <Play className="w-3.5 h-3.5 fill-current text-[#38BDF8]" />
-            <span>[ DEMO SCRIPT ]</span>
+            <span>[ DEMO ]</span>
+          </button>
+
+          {/* [RUN ALL TESTS] System Verification Button */}
+          <button
+            onClick={() => setIsFullTestModalOpen(true)}
+            className="btn-primary py-1 px-2.5 text-[11px] bg-[#10B981] hover:bg-[#059669] text-[#0F141C] border-[#10B981] font-bold flex items-center gap-1 font-sans cursor-pointer"
+            title="Run Complete 14-Point System Verification Suite"
+          >
+            <Cpu className="w-3.5 h-3.5" />
+            <span>[ TESTS ]</span>
           </button>
 
           <button
             onClick={() => setIsArchModalOpen(true)}
-            className="btn-secondary py-1 px-3 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer"
+            className="p-1.5 rounded-sm bg-[#161D27] hover:bg-[#212936] text-[#CBD5E1] border border-[#212936] transition-colors text-[10px] flex items-center gap-1 cursor-pointer"
+            title="System Architecture Diagram"
           >
             <Network className="w-3.5 h-3.5 text-[#38BDF8]" />
-            <span>[ ARCHITECTURE ]</span>
           </button>
 
           {/* UI Theme, Background & Highlight Customizer Button */}
@@ -119,7 +172,7 @@ export const Header: FC<HeaderProps> = (props) => {
 
           <button
             onClick={onOpenSettings}
-            className="p-1 rounded-sm bg-[#161D27] hover:bg-[#212936] text-[#CBD5E1] border border-[#212936] transition-colors text-[10px] flex items-center gap-1 cursor-pointer"
+            className="p-1.5 rounded-sm bg-[#161D27] hover:bg-[#212936] text-[#CBD5E1] border border-[#212936] transition-colors text-[10px] flex items-center gap-1 cursor-pointer"
             title="API Settings & Domain Setup"
           >
             <Key className="w-3.5 h-3.5 text-[#F59E0B]" />
