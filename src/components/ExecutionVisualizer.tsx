@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { type FC,  useState, useEffect  } from 'react';
 import { 
   Terminal, 
   ChevronRight, 
@@ -18,7 +18,7 @@ interface ExecutionVisualizerProps {
   isRunning: boolean;
 }
 
-export const ExecutionVisualizer: React.FC<ExecutionVisualizerProps> = ({
+export const ExecutionVisualizer: FC<ExecutionVisualizerProps> = ({
   steps,
   isRunning
 }) => {

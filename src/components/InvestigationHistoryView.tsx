@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { History, BookOpen, Network, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
 import { EvidenceGraphModal } from './EvidenceGraphModal';
 
@@ -6,7 +6,7 @@ interface InvestigationHistoryViewProps {
   onOpenDossier: () => void;
 }
 
-export const InvestigationHistoryView: React.FC<InvestigationHistoryViewProps> = ({
+export const InvestigationHistoryView: FC<InvestigationHistoryViewProps> = ({
   onOpenDossier
 }) => {
   const [isGraphOpen, setIsGraphOpen] = useState(false);

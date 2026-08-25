@@ -225,7 +225,7 @@ export function App() {
             <div className="h-full">
               <TemplateGallery 
                 agents={agents} 
-                onLaunchTask={(ag, prompt) => {
+                onLaunchTask={(ag: Agent, prompt: string) => {
                   setSelectedAgentId(ag.id);
                   setActiveTab('dashboard');
                   handleStartInvestigation(prompt, ['Technical'], 'All', 'Detailed', 'Strict');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Play, CheckCircle2, ShieldAlert, Table, RefreshCw, AlertTriangle, ArrowRight, ShieldCheck } from 'lucide-react';
 import { DEFAULT_RESILIENCE_SCENARIOS, RECOVERY_POLICY_MATRIX } from '../services/resilienceEngine';
 import type { ResilienceScenario } from '../services/resilienceEngine';

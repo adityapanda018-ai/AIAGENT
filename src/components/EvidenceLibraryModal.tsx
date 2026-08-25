@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { X, BookOpen, ExternalLink, Filter, CheckCircle2 } from 'lucide-react';
 import { resolveDomainEvidence } from '../services/evidenceDatabase';
 
@@ -8,7 +8,7 @@ interface EvidenceLibraryModalProps {
   taskPrompt?: string;
 }
 
-export const EvidenceLibraryModal: React.FC<EvidenceLibraryModalProps> = ({
+export const EvidenceLibraryModal: FC<EvidenceLibraryModalProps> = ({
   isOpen,
   onClose,
   taskPrompt = ''

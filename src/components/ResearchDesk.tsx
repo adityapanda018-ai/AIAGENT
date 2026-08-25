@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { Play, Square, BookOpen, HelpCircle, GitBranch, Sparkles, Volume2, VolumeX } from 'lucide-react';
 import type { Agent, ExecutionStep } from '../types/agent';
 import { ClaimTraceDrawer } from './ClaimTraceDrawer';
@@ -21,7 +21,7 @@ interface ResearchDeskProps {
   steps?: ExecutionStep[];
 }
 
-export const ResearchDesk: React.FC<ResearchDeskProps> = ({
+export const ResearchDesk: FC<ResearchDeskProps> = ({
   selectedAgent: _selectedAgent,
   taskPrompt,
   onPromptChange,

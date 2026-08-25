@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { X, Play, CheckCircle2, ArrowRight, BookOpen, ShieldCheck, FileText, BarChart3 } from 'lucide-react';
 
 interface WinningDemoScriptModalProps {
@@ -7,7 +7,7 @@ interface WinningDemoScriptModalProps {
   onRunDemoStep: (stepIndex: number) => void;
 }
 
-export const WinningDemoScriptModal: React.FC<WinningDemoScriptModalProps> = ({
+export const WinningDemoScriptModal: FC<WinningDemoScriptModalProps> = ({
   isOpen,
   onClose,
   onRunDemoStep

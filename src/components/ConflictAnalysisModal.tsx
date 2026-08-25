@@ -1,4 +1,5 @@
-import React from 'react';
+import type { FC } from 'react';
+
 import { X, CheckCircle2, ArrowRight, Calculator } from 'lucide-react';
 
 interface ConflictAnalysisModalProps {
@@ -6,7 +7,7 @@ interface ConflictAnalysisModalProps {
   onClose: () => void;
 }
 
-export const ConflictAnalysisModal: React.FC<ConflictAnalysisModalProps> = ({
+export const ConflictAnalysisModal: FC<ConflictAnalysisModalProps> = ({
   isOpen,
   onClose
 }) => {

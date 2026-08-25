@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { X, Network, GitBranch, Workflow, UserCheck, Layers, Server, Cloud, Trophy, Database } from 'lucide-react';
 
 interface SystemArchitectureModalProps {
@@ -6,7 +6,7 @@ interface SystemArchitectureModalProps {
   onClose: () => void;
 }
 
-export const SystemArchitectureModal: React.FC<SystemArchitectureModalProps> = ({
+export const SystemArchitectureModal: FC<SystemArchitectureModalProps> = ({
   isOpen,
   onClose
 }) => {

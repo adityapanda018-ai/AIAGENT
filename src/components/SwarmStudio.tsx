@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC, useState, Fragment } from 'react';
 import { ArrowRight, Play, Zap, ShieldCheck, Sparkles, ChevronDown, ChevronUp, Info } from 'lucide-react';
 import type { SwarmTeam, Agent } from '../types/agent';
 import { DEFAULT_SWARMS } from '../data/defaultData';
@@ -10,7 +10,7 @@ interface SwarmStudioProps {
   isRunning: boolean;
 }
 
-export const SwarmStudio: React.FC<SwarmStudioProps> = ({
+export const SwarmStudio: FC<SwarmStudioProps> = ({
   agents,
   swarms,
   onRunSwarm,
@@ -124,14 +124,14 @@ export const SwarmStudio: React.FC<SwarmStudioProps> = ({
 
                 <div className="flex items-center gap-2 pt-2 border-t border-[#27313C]">
                   {teamAgents.map((ag, idx) => (
-                    <React.Fragment key={ag?.id || idx}>
+                    <Fragment key={ag?.id || idx}>
                       <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#0B0F14] border border-[#27313C] text-[10px]">
                         <span className="font-bold text-[#C59A52]">{ag?.name}</span>
                       </div>
                       {idx < teamAgents.length - 1 && (
                         <ArrowRight className="w-3 h-3 text-[#8D98A5] shrink-0" />
                       )}
-                    </React.Fragment>
+                    </Fragment>
                   ))}
                 </div>
               </div>

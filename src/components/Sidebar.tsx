@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import type { Agent, NavTab } from '../types/agent';
 import { FailureHandlingModal } from './FailureHandlingModal';
 import { EvidenceGraphModal } from './EvidenceGraphModal';
@@ -25,7 +25,7 @@ interface SidebarProps {
   onNewAgent?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({
+export const Sidebar: FC<SidebarProps> = ({
   activeTab,
   onSelectTab,
   agents,

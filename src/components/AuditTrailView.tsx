@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { History, ShieldCheck, CheckCircle2, QrCode } from 'lucide-react';
 
 export const AuditTrailView: React.FC = () => {

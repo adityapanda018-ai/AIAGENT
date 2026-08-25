@@ -1,4 +1,5 @@
-import React from 'react';
+import type { FC } from 'react';
+
 import { Sparkles, Play, Terminal, Search, BarChart2, ShieldCheck, FileText, Globe } from 'lucide-react';
 import type { Agent } from '../types/agent';
 
@@ -14,7 +15,7 @@ const SAMPLE_PROMPTS: Record<string, string> = {
   'agent-vortex': 'Evaluate risk trade-offs and deployment specifications for an enterprise multi-cloud transition.'
 };
 
-export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
+export const TemplateGallery: FC<TemplateGalleryProps> = ({
   agents,
   onLaunchTask
 }) => {

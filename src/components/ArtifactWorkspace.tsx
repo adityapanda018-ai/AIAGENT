@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { 
   FileCode, 
   FileText, 
@@ -27,7 +27,7 @@ interface ArtifactWorkspaceProps {
   artifacts: Artifact[];
 }
 
-export const ArtifactWorkspace: React.FC<ArtifactWorkspaceProps> = ({ artifacts }) => {
+export const ArtifactWorkspace: FC<ArtifactWorkspaceProps> = ({ artifacts }) => {
   const [activeArtifactId, setActiveArtifactId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [codeRunOutput, setCodeRunOutput] = useState<CodeRunResult | null>(null);

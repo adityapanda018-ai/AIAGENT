@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { type FC,  useState, useEffect  } from 'react';
 import { X, Mic, MicOff, Volume2, VolumeX, Sparkles, Play } from 'lucide-react';
 import { voiceEngine } from '../services/voiceService';
 
@@ -8,7 +8,7 @@ interface VoiceAssistantModalProps {
   onRunPrompt: (promptText: string) => void;
 }
 
-export const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({
+export const VoiceAssistantModal: FC<VoiceAssistantModalProps> = ({
   isOpen,
   onClose,
   onRunPrompt

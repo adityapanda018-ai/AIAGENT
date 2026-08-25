@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { type FC, type KeyboardEvent, useState, useEffect, useRef } from 'react';
 import { Sparkles, Mic, ArrowRight } from 'lucide-react';
 import { predictiveEngine, type PredictionResult } from '../services/predictiveTextEngine';
 import { voiceEngine } from '../services/voiceService';
@@ -10,7 +10,7 @@ interface PredictiveTextareaProps {
   minRows?: number;
 }
 
-export const PredictiveTextarea: React.FC<PredictiveTextareaProps> = ({
+export const PredictiveTextarea: FC<PredictiveTextareaProps> = ({
   value,
   onChange,
   placeholder = 'Enter research prompt...',
@@ -25,7 +25,7 @@ export const PredictiveTextarea: React.FC<PredictiveTextareaProps> = ({
     setPrediction(res);
   }, [value]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if ((e.key === 'Tab' || e.key === 'ArrowRight') && prediction?.suggestionSuffix) {
       // Check if cursor is at the end of the text
       const target = e.currentTarget;

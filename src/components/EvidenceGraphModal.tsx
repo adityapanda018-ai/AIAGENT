@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { X, Network, ShieldCheck, Info, ArrowDown } from 'lucide-react';
 import { resolveDomainEvidence } from '../services/evidenceDatabase';
 
@@ -8,7 +8,7 @@ interface EvidenceGraphModalProps {
   taskPrompt?: string;
 }
 
-export const EvidenceGraphModal: React.FC<EvidenceGraphModalProps> = ({
+export const EvidenceGraphModal: FC<EvidenceGraphModalProps> = ({
   isOpen,
   onClose,
   taskPrompt = ''

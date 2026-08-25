@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { X, Activity, CheckCircle2, Zap } from 'lucide-react';
 
 interface PerformanceBenchmarkModalProps {
@@ -6,7 +6,7 @@ interface PerformanceBenchmarkModalProps {
   onClose: () => void;
 }
 
-export const PerformanceBenchmarkModal: React.FC<PerformanceBenchmarkModalProps> = ({
+export const PerformanceBenchmarkModal: FC<PerformanceBenchmarkModalProps> = ({
   isOpen,
   onClose
 }) => {

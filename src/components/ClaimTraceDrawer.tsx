@@ -1,4 +1,5 @@
-import React from 'react';
+import type { FC } from 'react';
+
 import { X, CheckCircle2, ShieldCheck, BarChart3, Database, GitBranch, ArrowDown } from 'lucide-react';
 import { getClaimRelationalTrace, resolveDomainEvidence } from '../services/evidenceDatabase';
 
@@ -9,7 +10,7 @@ interface ClaimTraceDrawerProps {
   taskPrompt?: string;
 }
 
-export const ClaimTraceDrawer: React.FC<ClaimTraceDrawerProps> = ({
+export const ClaimTraceDrawer: FC<ClaimTraceDrawerProps> = ({
   isOpen,
   onClose,
   claimId = 'CLAIM C-014',

@@ -1,4 +1,5 @@
-import React from 'react';
+import type { FC } from 'react';
+
 import { Table } from 'lucide-react';
 import { resolveDomainEvidence } from '../services/evidenceDatabase';
 
@@ -6,7 +7,7 @@ interface EngineeringDecisionMatrixProps {
   taskPrompt?: string;
 }
 
-export const EngineeringDecisionMatrix: React.FC<EngineeringDecisionMatrixProps> = ({
+export const EngineeringDecisionMatrix: FC<EngineeringDecisionMatrixProps> = ({
   taskPrompt = ''
 }) => {
   const domainData = resolveDomainEvidence(taskPrompt);

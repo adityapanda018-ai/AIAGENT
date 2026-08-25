@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC, type ChangeEvent, useState } from 'react';
 import { Database, Plus, Trash2, ShieldCheck, Table, FileText, Upload, CheckCircle2 } from 'lucide-react';
 import type { KnowledgeDocument, Agent } from '../types/agent';
 import { relationalEvidenceDB } from '../services/evidenceDatabase';
@@ -10,7 +10,7 @@ interface KnowledgeBaseProps {
   onDeleteDocument: (id: string) => void;
 }
 
-export const KnowledgeBase: React.FC<KnowledgeBaseProps> = ({
+export const KnowledgeBase: FC<KnowledgeBaseProps> = ({
   documents,
   agents: _agents,
   onAddDocument,
@@ -23,7 +23,7 @@ export const KnowledgeBase: React.FC<KnowledgeBaseProps> = ({
   const [activeTable, setActiveTable] = useState<'claims' | 'evidence' | 'verification'>('claims');
   const [uploadFileName, setUploadFileName] = useState<string>('');
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 

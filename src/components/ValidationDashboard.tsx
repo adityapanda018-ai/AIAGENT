@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { ShieldCheck, CheckCircle2, Table } from 'lucide-react';
 import { INVESTIGATION_RUN_HISTORY, VALIDATION_METRICS } from '../services/validationStore';
 

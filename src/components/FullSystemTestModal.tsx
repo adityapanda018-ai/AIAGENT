@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { X, Play, ShieldCheck, CheckCircle2, RefreshCw, Terminal } from 'lucide-react';
 
 interface FullSystemTestModalProps {
@@ -14,7 +14,7 @@ export interface TestCaseItem {
   assertionLog: string;
 }
 
-export const FullSystemTestModal: React.FC<FullSystemTestModalProps> = ({
+export const FullSystemTestModal: FC<FullSystemTestModalProps> = ({
   isOpen,
   onClose
 }) => {

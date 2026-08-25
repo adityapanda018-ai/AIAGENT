@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Search, Database, FileText, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 export const KnowledgeIndexSearch: React.FC = () => {

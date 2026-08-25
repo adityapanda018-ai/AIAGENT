@@ -1,4 +1,5 @@
-import React from 'react';
+import type { FC } from 'react';
+
 import { X, HelpCircle, CheckCircle2, ShieldCheck, ArrowDown } from 'lucide-react';
 import { resolveDomainEvidence } from '../services/evidenceDatabase';
 
@@ -8,7 +9,7 @@ interface WhyConclusionModalProps {
   taskPrompt?: string;
 }
 
-export const WhyConclusionModal: React.FC<WhyConclusionModalProps> = ({
+export const WhyConclusionModal: FC<WhyConclusionModalProps> = ({
   isOpen,
   onClose,
   taskPrompt = ''

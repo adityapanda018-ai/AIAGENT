@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { type FC,  useState, useEffect  } from 'react';
 import { Cpu, Key, Database, Network, Info, Play, Palette, Mic } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import { SystemArchitectureModal } from './SystemArchitectureModal';
@@ -14,7 +14,7 @@ interface HeaderProps {
   onRunPrompt?: (promptText: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
+export const Header: FC<HeaderProps> = ({
   settings: _settings,
   onOpenSettings,
   onOpenAgentBuilder: _onOpenAgentBuilder,

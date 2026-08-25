@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Cpu, Server, Activity, ShieldCheck, Zap } from 'lucide-react';
 
 export const ObservabilityDashboard: React.FC = () => {

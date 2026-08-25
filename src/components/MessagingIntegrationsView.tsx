@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MessageSquare, Send, RefreshCw, Terminal, PhoneCall, Mail, MessageCircle, ShieldCheck } from 'lucide-react';
 import { DEFAULT_MESSAGING_CHANNELS, dispatchMessageNotification } from '../services/messagingService';
 import type { MessagingChannelConfig } from '../services/messagingService';

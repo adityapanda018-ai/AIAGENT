@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ShieldCheck, CheckCircle2, RefreshCw, FileText } from 'lucide-react';
 import { FullSystemTestModal } from './FullSystemTestModal';
 

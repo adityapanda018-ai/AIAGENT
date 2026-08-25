@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { X, CheckCircle2, ShieldCheck, Database, Table } from 'lucide-react';
 import { getClaimRelationalTrace } from '../services/evidenceDatabase';
 
@@ -10,7 +10,7 @@ interface ClaimTraceModalProps {
   supportedBy?: string[];
 }
 
-export const ClaimTraceModal: React.FC<ClaimTraceModalProps> = ({
+export const ClaimTraceModal: FC<ClaimTraceModalProps> = ({
   isOpen,
   onClose,
   claimId = 'CLAIM C-014'

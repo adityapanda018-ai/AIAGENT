@@ -1,4 +1,5 @@
-import React from 'react';
+import type { FC } from 'react';
+
 import { X, HelpCircle, CheckCircle2, ShieldCheck, Target, Layers, FileText, Cpu } from 'lucide-react';
 import { resolveDomainEvidence } from '../services/evidenceDatabase';
 
@@ -8,7 +9,7 @@ interface QuestionAnalysisModalProps {
   taskPrompt?: string;
 }
 
-export const QuestionAnalysisModal: React.FC<QuestionAnalysisModalProps> = ({
+export const QuestionAnalysisModal: FC<QuestionAnalysisModalProps> = ({
   isOpen,
   onClose,
   taskPrompt = ''

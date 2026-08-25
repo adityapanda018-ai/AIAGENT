@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { X, Save, Terminal } from 'lucide-react';
 import type { Agent, AgentRole, LLMModel } from '../types/agent';
 import { DEFAULT_TOOLS } from '../data/defaultData';
@@ -71,7 +71,7 @@ const DOMAIN_PRESETS = [
   }
 ];
 
-export const AgentBuilderModal: React.FC<AgentBuilderModalProps> = ({
+export const AgentBuilderModal: FC<AgentBuilderModalProps> = ({
   isOpen,
   onClose,
   onSaveAgent,

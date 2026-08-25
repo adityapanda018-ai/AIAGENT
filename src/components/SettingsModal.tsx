@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { X, Key, ShieldCheck, Check, Trash2, Globe } from 'lucide-react';
 import type { ApiSettings, LLMModel } from '../types/agent';
 
@@ -10,7 +10,7 @@ interface SettingsModalProps {
   onResetAll: () => void;
 }
 
-export const SettingsModal: React.FC<SettingsModalProps> = ({
+export const SettingsModal: FC<SettingsModalProps> = ({
   isOpen,
   onClose,
   settings,

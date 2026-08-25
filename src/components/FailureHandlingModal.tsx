@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type FC,  useState  } from 'react';
 import { X, AlertOctagon, RefreshCw, Search, ArrowRight, ShieldAlert, AlertTriangle } from 'lucide-react';
 
 interface FailureHandlingModalProps {
@@ -6,7 +6,7 @@ interface FailureHandlingModalProps {
   onClose: () => void;
 }
 
-export const FailureHandlingModal: React.FC<FailureHandlingModalProps> = ({
+export const FailureHandlingModal: FC<FailureHandlingModalProps> = ({
   isOpen,
   onClose
 }) => {
