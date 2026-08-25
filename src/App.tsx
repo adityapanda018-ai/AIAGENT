@@ -6,6 +6,7 @@ import { ExecutionVisualizer } from './components/ExecutionVisualizer';
 import { ArtifactWorkspace } from './components/ArtifactWorkspace';
 import { AgentBuilderModal } from './components/AgentBuilderModal';
 import { SettingsModal } from './components/SettingsModal';
+import { ThemeCustomizerModal } from './components/ThemeCustomizerModal';
 import { KnowledgeBase } from './components/KnowledgeBase';
 import { TemplateGallery } from './components/TemplateGallery';
 import { ValidationDashboard } from './components/ValidationDashboard';
@@ -33,6 +34,11 @@ export function App() {
 
   const [isAgentBuilderOpen, setIsAgentBuilderOpen] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+  const [isThemeModalOpen, setIsThemeModalOpen] = useState<boolean>(false);
+  const [theme, setTheme] = useState<string>('dark');
+  const [background, setBackground] = useState<string>('grid');
+  const [highlight, setHighlight] = useState<string>('cyan');
+
   const [settings, setSettings] = useState<ApiSettings>({
     activeProvider: 'simulation',
     selectedModel: 'gpt-4o',
@@ -53,7 +59,36 @@ export function App() {
         console.error("Failed to load settings:", e);
       }
     }
+    const savedTheme = localStorage.getItem('nexusai_theme');
+    if (savedTheme) setTheme(savedTheme);
+
+    const savedBg = localStorage.getItem('nexusai_bg');
+    if (savedBg) setBackground(savedBg);
+
+    const savedHl = localStorage.getItem('nexusai_hl');
+    if (savedHl) setHighlight(savedHl);
   }, []);
+
+  const handleSelectTheme = (newTheme: string) => {
+    setTheme(newTheme);
+    localStorage.setItem('nexusai_theme', newTheme);
+  };
+
+  const handleSelectBg = (newBg: string) => {
+    setBackground(newBg);
+    localStorage.setItem('nexusai_bg', newBg);
+  };
+
+  const handleSelectHl = (newHl: string) => {
+    setHighlight(newHl);
+    localStorage.setItem('nexusai_hl', newHl);
+  };
+
+  const handleResetThemeDefaults = () => {
+    handleSelectTheme('dark');
+    handleSelectBg('grid');
+    handleSelectHl('cyan');
+  };
 
   const handleSaveSettings = (newSettings: ApiSettings) => {
     setSettings(newSettings);
@@ -130,12 +165,18 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen h-screen flex flex-col bg-[#0F141C] text-[#F1F5F9] font-sans overflow-hidden select-none">
+    <div 
+      data-theme={theme}
+      data-highlight={highlight}
+      className={`min-h-screen h-screen flex flex-col text-[#F1F5F9] font-sans overflow-hidden select-none bg-texture-${background}`}
+      style={{ backgroundColor: 'var(--bg-main, #0F141C)' }}
+    >
       {/* 1. HEADER */}
       <Header
         settings={settings}
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenAgentBuilder={() => setIsAgentBuilderOpen(true)}
+        onOpenThemeModal={() => setIsThemeModalOpen(true)}
         onRunDemoStep={handleRunDemoStep}
       />
 
@@ -282,6 +323,18 @@ export function App() {
             autoRunCode: true
           });
         }}
+      />
+
+      <ThemeCustomizerModal
+        isOpen={isThemeModalOpen}
+        onClose={() => setIsThemeModalOpen(false)}
+        currentTheme={theme}
+        onSelectTheme={handleSelectTheme}
+        currentBackground={background}
+        onSelectBackground={handleSelectBg}
+        currentHighlight={highlight}
+        onSelectHighlight={handleSelectHl}
+        onResetDefaults={handleResetThemeDefaults}
       />
     </div>
   );

@@ -2,8 +2,8 @@
 
 @layer base {
   body {
-    background-color: #0F141C;
-    color: #F1F5F9;
+    background-color: var(--bg-main, #0F141C);
+    color: var(--text-primary, #F1F5F9);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }
@@ -15,22 +15,22 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0F141C;
+  background: var(--bg-main, #0F141C);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #212936;
+  background: var(--border-color, #212936);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #38BDF8;
+  background: var(--accent-color, #38BDF8);
 }
 
 /* Firefox scrollbar styling */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #212936 #0F141C;
+  scrollbar-color: var(--border-color, #212936) var(--bg-main, #0F141C);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -98,7 +98,17 @@
   border-color: var(--accent-color, #38BDF8);
 }
 
-/* Theme Variations */
+/* 🎨 THEME PRESETS */
+[data-theme="dark"] {
+  --bg-main: #0F141C;
+  --bg-card: #161D27;
+  --bg-panel: #0F141C;
+  --border-color: #212936;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --accent-color: #38BDF8;
+}
+
 [data-theme="emerald"] {
   --bg-main: #061A14;
   --bg-card: #0D2820;
@@ -119,6 +129,26 @@
   --accent-color: #F59E0B;
 }
 
+[data-theme="cyberpunk"] {
+  --bg-main: #13091F;
+  --bg-card: #1D0F30;
+  --bg-panel: #13091F;
+  --border-color: #3B1D5F;
+  --text-primary: #FAF5FF;
+  --text-secondary: #D8B4FE;
+  --accent-color: #A855F7;
+}
+
+[data-theme="amoled"] {
+  --bg-main: #000000;
+  --bg-card: #0A0A0A;
+  --bg-panel: #000000;
+  --border-color: #1E1E1E;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A3A3A3;
+  --accent-color: #38BDF8;
+}
+
 [data-theme="light"] {
   --bg-main: #F8FAFC;
   --bg-card: #FFFFFF;
@@ -129,7 +159,36 @@
   --accent-color: #0284C7;
 }
 
-/* User Specification: Phase 19 Clean PDF Export Print Styles */
+/* 🌟 DYNAMIC HIGHLIGHT OVERRIDES */
+[data-highlight="cyan"] { --accent-color: #38BDF8 !important; }
+[data-highlight="emerald"] { --accent-color: #10B981 !important; }
+[data-highlight="amber"] { --accent-color: #F59E0B !important; }
+[data-highlight="violet"] { --accent-color: #A855F7 !important; }
+[data-highlight="rose"] { --accent-color: #F43F5E !important; }
+[data-highlight="orange"] { --accent-color: #FB923C !important; }
+
+/* 🌌 BACKGROUND TEXTURES */
+.bg-texture-plain {
+  background-image: none;
+}
+
+.bg-texture-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.bg-texture-dots {
+  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+}
+
+.bg-texture-glow {
+  background-image: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 60%);
+}
+
+/* Print Styles */
 @media print {
   body {
     background-color: #ffffff !important;

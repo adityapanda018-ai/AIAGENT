@@ -9,17 +9,16 @@ interface HeaderProps {
   settings: ApiSettings;
   onOpenSettings: () => void;
   onOpenAgentBuilder: () => void;
+  onOpenThemeModal: () => void;
   onRunDemoStep?: (stepIndex: number) => void;
 }
 
 export const Header: FC<HeaderProps> = (props) => {
-  const { onOpenSettings, onRunDemoStep } = props;
+  const { onOpenSettings, onOpenThemeModal, onRunDemoStep } = props;
   const [timeStr, setTimeStr] = useState<string>('');
   const [isArchModalOpen, setIsArchModalOpen] = useState<boolean>(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
   const [isFullTestModalOpen, setIsFullTestModalOpen] = useState<boolean>(false);
-  const [currentTheme, setCurrentTheme] = useState<string>('dark');
-  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const update = () => setTimeStr(new Date().toTimeString().split(' ')[0].slice(0, 5));
@@ -27,16 +26,6 @@ export const Header: FC<HeaderProps> = (props) => {
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleThemeChange = (themeName: string) => {
-    setCurrentTheme(themeName);
-    if (themeName === 'dark') {
-      document.documentElement.removeAttribute('data-theme');
-    } else {
-      document.documentElement.setAttribute('data-theme', themeName);
-    }
-    setIsThemeMenuOpen(false);
-  };
 
   return (
     <header className="border-b border-[#212936] bg-[#0F141C] select-none font-sans">
@@ -119,50 +108,14 @@ export const Header: FC<HeaderProps> = (props) => {
             <span>[ ARCHITECTURE ]</span>
           </button>
 
-          {/* UI Theme Switcher */}
-          <div className="relative">
-            <button
-              onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
-              className="p-1 rounded-sm bg-[#161D27] hover:bg-[#212936] text-[#CBD5E1] border border-[#212936] transition-colors text-[10px] flex items-center gap-1 cursor-pointer"
-              title="Change UI Branding & Theme"
-            >
-              <Palette className="w-3.5 h-3.5 text-[#38BDF8]" />
-            </button>
-
-            {isThemeMenuOpen && (
-              <div className="absolute right-0 mt-1 w-44 bg-[#161D27] border border-[#212936] rounded-sm shadow-xl z-50 p-1.5 font-mono text-[11px]">
-                <div className="text-[10px] text-[#94A3B8] font-bold px-2 py-1 uppercase tracking-wider">UI THEMES</div>
-                <button
-                  onClick={() => handleThemeChange('dark')}
-                  className={`w-full text-left px-2 py-1 rounded flex items-center justify-between ${currentTheme === 'dark' ? 'bg-[#38BDF8]/20 text-[#38BDF8] font-bold' : 'text-[#CBD5E1] hover:bg-[#212936]'}`}
-                >
-                  <span>Dark Cyber</span>
-                  {currentTheme === 'dark' && <span>✓</span>}
-                </button>
-                <button
-                  onClick={() => handleThemeChange('emerald')}
-                  className={`w-full text-left px-2 py-1 rounded flex items-center justify-between ${currentTheme === 'emerald' ? 'bg-[#10B981]/20 text-[#10B981] font-bold' : 'text-[#CBD5E1] hover:bg-[#212936]'}`}
-                >
-                  <span>Emerald Obsidian</span>
-                  {currentTheme === 'emerald' && <span>✓</span>}
-                </button>
-                <button
-                  onClick={() => handleThemeChange('amber')}
-                  className={`w-full text-left px-2 py-1 rounded flex items-center justify-between ${currentTheme === 'amber' ? 'bg-[#F59E0B]/20 text-[#F59E0B] font-bold' : 'text-[#CBD5E1] hover:bg-[#212936]'}`}
-                >
-                  <span>Solar Amber</span>
-                  {currentTheme === 'amber' && <span>✓</span>}
-                </button>
-                <button
-                  onClick={() => handleThemeChange('light')}
-                  className={`w-full text-left px-2 py-1 rounded flex items-center justify-between ${currentTheme === 'light' ? 'bg-[#0284C7]/20 text-[#0284C7] font-bold' : 'text-[#CBD5E1] hover:bg-[#212936]'}`}
-                >
-                  <span>Light Professional</span>
-                  {currentTheme === 'light' && <span>✓</span>}
-                </button>
-              </div>
-            )}
-          </div>
+          {/* UI Theme, Background & Highlight Customizer Button */}
+          <button
+            onClick={onOpenThemeModal}
+            className="p-1.5 rounded-sm bg-[#161D27] hover:bg-[#212936] text-[#CBD5E1] border border-[#212936] transition-colors text-[10px] flex items-center gap-1 cursor-pointer"
+            title="Customize Themes, Background Textures & Highlight Accents"
+          >
+            <Palette className="w-3.5 h-3.5 text-[#38BDF8]" />
+          </button>
 
           <button
             onClick={onOpenSettings}
