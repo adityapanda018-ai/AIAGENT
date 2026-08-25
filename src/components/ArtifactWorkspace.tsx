@@ -87,58 +87,63 @@ export const ArtifactWorkspace: FC<ArtifactWorkspaceProps> = ({ artifacts }) => 
   };
 
   return (
-    <div className="h-full flex flex-col glass-card overflow-hidden font-sans select-none bg-[#161D27] border-[#212936] rounded-sm">
-      {/* Header Bar */}
-      <div className="p-2 border-b border-[#212936] bg-[#0F141C] flex items-center justify-between">
-        <div className="flex items-center gap-2 overflow-x-auto pr-2">
-          <BookOpen className="w-3.5 h-3.5 text-[#F59E0B] shrink-0" />
-          <span className="font-semibold text-xs text-[#F1F5F9] uppercase tracking-wider shrink-0 mr-1 font-sans">NEXUSAI RESEARCH DOSSIER & DELIVERABLE</span>
+    <div className="h-full flex flex-col overflow-hidden font-sans select-none bg-[#161D27] border border-[#212936] rounded-md shadow-sm">
+      {/* Sleek Professional Toolbar */}
+      <div className="px-4 py-2.5 border-b border-[#212936] bg-[#0F141C] flex flex-wrap items-center justify-between gap-3 font-mono">
+        {/* Left: Tab Selector */}
+        <div className="flex items-center gap-2 overflow-x-auto">
+          <div className="flex items-center gap-1.5 text-xs text-[#F1F5F9] font-bold shrink-0 mr-2">
+            <BookOpen className="w-4 h-4 text-[#F59E0B]" />
+            <span className="tracking-wide">DOSSIER & DELIVERABLES</span>
+          </div>
 
-          {artifacts.length === 0 ? (
-            <span className="text-[11px] text-[#94A3B8] italic font-sans">No research artifacts compiled</span>
-          ) : (
-            artifacts.map((art) => {
-              const isSelected = (selectedArtifact?.id === art.id);
-              return (
-                <button
-                  key={art.id}
-                  onClick={() => {
-                    setActiveArtifactId(art.id);
-                    setCodeRunOutput(null);
-                  }}
-                  className={`px-2 py-1 rounded-sm text-[11px] font-semibold flex items-center gap-1.5 whitespace-nowrap transition-all font-sans ${
-                    isSelected
-                      ? 'bg-[#161D27] text-[#38BDF8] border border-[#38BDF8]/40 shadow-sm'
-                      : 'text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-[#0F141C]'
-                  }`}
-                >
-                  {art.type === 'code' && <FileCode className="w-3 h-3 text-[#38BDF8]" />}
-                  {art.type === 'markdown' && <FileText className="w-3 h-3 text-[#F59E0B]" />}
-                  {art.type === 'chart' && <BarChart3 className="w-3 h-3 text-[#10B981]" />}
-                  <span className="max-w-[110px] truncate">{art.title}</span>
-                </button>
-              );
-            })
-          )}
+          <div className="flex items-center gap-1.5 overflow-x-auto">
+            {artifacts.length === 0 ? (
+              <span className="text-[11px] text-[#94A3B8] italic">No research artifacts compiled</span>
+            ) : (
+              artifacts.map((art) => {
+                const isSelected = (selectedArtifact?.id === art.id);
+                return (
+                  <button
+                    key={art.id}
+                    onClick={() => {
+                      setActiveArtifactId(art.id);
+                      setCodeRunOutput(null);
+                    }}
+                    className={`px-3 py-1 rounded-md text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-[#161D27] text-[#38BDF8] border border-[#38BDF8]/40 shadow-xs font-semibold'
+                        : 'text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-[#161D27]/50 border border-transparent'
+                    }`}
+                  >
+                    {art.type === 'code' && <FileCode className="w-3.5 h-3.5 text-[#38BDF8]" />}
+                    {art.type === 'markdown' && <FileText className="w-3.5 h-3.5 text-[#F59E0B]" />}
+                    {art.type === 'chart' && <BarChart3 className="w-3.5 h-3.5 text-[#10B981]" />}
+                    <span className="max-w-[140px] truncate">{art.title}</span>
+                  </button>
+                );
+              })
+            )}
+          </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-1.5 font-sans">
+        {/* Right: View Toggle & Export Actions */}
+        <div className="flex items-center gap-2 shrink-0">
           {viewMode === 'raw' && selectedArtifact && (
-            <>
+            <div className="flex items-center gap-1">
               {selectedArtifact.type === 'code' && (
                 <button
                   onClick={handleRunCode}
-                  className="btn-primary py-0.5 px-2 text-[10px]"
+                  className="btn-primary py-1 px-2.5 text-xs font-bold flex items-center gap-1 cursor-pointer"
                 >
                   <Play className="w-3 h-3 fill-current" />
-                  <span>Execute Sandbox</span>
+                  <span>Execute</span>
                 </button>
               )}
 
               <button
                 onClick={() => handleCopy(selectedArtifact.content)}
-                className="p-1 rounded-sm bg-[#0F141C] hover:bg-[#161D27] text-[#F1F5F9] border border-[#212936] transition-colors text-[10px]"
+                className="p-1.5 rounded-md bg-[#161D27] hover:bg-[#212936] text-[#CBD5E1] border border-[#212936] transition-colors text-xs cursor-pointer"
                 title="Copy Content"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-[#10B981]" /> : <Copy className="w-3.5 h-3.5" />}
@@ -146,61 +151,62 @@ export const ArtifactWorkspace: FC<ArtifactWorkspaceProps> = ({ artifacts }) => 
 
               <button
                 onClick={() => handleDownload(selectedArtifact)}
-                className="p-1 rounded-sm bg-[#0F141C] hover:bg-[#161D27] text-[#F1F5F9] border border-[#212936] transition-colors text-[10px]"
+                className="p-1.5 rounded-md bg-[#161D27] hover:bg-[#212936] text-[#CBD5E1] border border-[#212936] transition-colors text-xs cursor-pointer"
                 title="Download File"
               >
                 <Download className="w-3.5 h-3.5" />
               </button>
-            </>
+            </div>
           )}
 
+          {/* View Mode Switcher */}
           <button
             onClick={() => setViewMode(viewMode === 'dossier' ? 'raw' : 'dossier')}
-            className={`py-0.5 px-2 text-[10px] font-mono font-semibold rounded-sm border ${
+            className={`px-3 py-1 text-xs font-semibold rounded-md border transition-all cursor-pointer whitespace-nowrap ${
               viewMode === 'dossier'
-                ? 'bg-[#38BDF8] text-[#0F141C] border-[#38BDF8]'
-                : 'bg-[#0F141C] text-[#94A3B8] border-[#212936] hover:bg-[#161D27]'
+                ? 'bg-[#38BDF8]/15 text-[#38BDF8] border-[#38BDF8]/40 shadow-xs'
+                : 'bg-[#161D27] text-[#94A3B8] border-[#212936] hover:text-[#F1F5F9]'
             }`}
           >
-            [ VIEW DOSSIER ]
+            {viewMode === 'dossier' ? 'Document View' : 'Raw Source'}
           </button>
 
-          {/* Multi-Format Export Suite */}
-          <div className="flex items-center gap-1 font-mono text-[9px]">
+          {/* Export Suite */}
+          <div className="flex items-center bg-[#161D27] border border-[#212936] rounded-md p-0.5 gap-0.5 text-[11px]">
             <button
               onClick={handleExportJupyter}
-              className="py-0.5 px-1.5 rounded-sm bg-[#F59E0B]/10 hover:bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/30 font-bold flex items-center gap-1 cursor-pointer"
+              className="px-2 py-1 rounded text-[#F59E0B] hover:bg-[#0F141C] transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap font-medium"
               title="Download runnable Jupyter Notebook (.ipynb)"
             >
-              <FileCode className="w-2.5 h-2.5" />
-              <span>[.IPYNB]</span>
+              <FileCode className="w-3 h-3" />
+              <span>.ipynb</span>
             </button>
 
             <button
               onClick={handleExportLatex}
-              className="py-0.5 px-1.5 rounded-sm bg-[#818CF8]/10 hover:bg-[#818CF8]/20 text-[#818CF8] border border-[#818CF8]/30 font-bold flex items-center gap-1 cursor-pointer"
-              title="Download IEEE LaTeX Paper Draft (.tex)"
+              className="px-2 py-1 rounded text-[#818CF8] hover:bg-[#0F141C] transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap font-medium"
+              title="Download IEEE LaTeX Paper (.tex)"
             >
-              <FileText className="w-2.5 h-2.5" />
-              <span>[.TEX]</span>
+              <FileText className="w-3 h-3" />
+              <span>.tex</span>
             </button>
 
             <button
               onClick={handleExportMarkdown}
-              className="py-0.5 px-1.5 rounded-sm bg-[#38BDF8]/10 hover:bg-[#38BDF8]/20 text-[#38BDF8] border border-[#38BDF8]/30 font-bold flex items-center gap-1 cursor-pointer"
-              title="Download Markdown Deliverable (.md)"
+              className="px-2 py-1 rounded text-[#38BDF8] hover:bg-[#0F141C] transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap font-medium"
+              title="Download Markdown (.md)"
             >
-              <Download className="w-2.5 h-2.5" />
-              <span>[.MD]</span>
+              <Download className="w-3 h-3" />
+              <span>.md</span>
             </button>
 
             <button
               onClick={handleExportPDF}
-              className="py-0.5 px-2 text-[10px] rounded-sm bg-[#10B981] text-[#0F141C] border border-[#10B981] hover:bg-[#10B981]/90 font-bold flex items-center gap-1 cursor-pointer"
+              className="px-2.5 py-1 rounded bg-[#10B981] hover:bg-[#059669] text-[#0F141C] font-bold flex items-center gap-1.5 cursor-pointer whitespace-nowrap transition-colors"
               title="Print or Export PDF Report"
             >
               <Printer className="w-3 h-3" />
-              <span>[ PDF ]</span>
+              <span>PDF</span>
             </button>
           </div>
         </div>
