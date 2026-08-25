@@ -318,8 +318,6 @@ export function App() {
             }
           }}
           onNewAgent={() => setIsAgentBuilderOpen(true)}
-          onOpenRoiCalculator={() => setIsRoiModalOpen(true)}
-          onOpenApiDocs={() => setIsApiDocsModalOpen(true)}
         />
 
         {/* 3. RIGHT CONTENT PANE */}
