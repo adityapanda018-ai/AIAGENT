@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Square, BookOpen, HelpCircle, GitBranch, Sparkles, Mic, Volume2, VolumeX } from 'lucide-react';
+import { Play, Square, BookOpen, HelpCircle, GitBranch, Sparkles, Volume2, VolumeX } from 'lucide-react';
 import type { Agent, ExecutionStep } from '../types/agent';
 import { ClaimTraceDrawer } from './ClaimTraceDrawer';
 import { EvidenceLibraryModal } from './EvidenceLibraryModal';
@@ -9,6 +9,7 @@ import { EvidenceGraphModal } from './EvidenceGraphModal';
 import { QuestionAnalysisModal } from './QuestionAnalysisModal';
 import { resolveDomainEvidence } from '../services/evidenceDatabase';
 import { voiceEngine } from '../services/voiceService';
+import { PredictiveTextarea } from './PredictiveTextarea';
 
 interface ResearchDeskProps {
   selectedAgent: Agent;
@@ -38,7 +39,6 @@ export const ResearchDesk: React.FC<ResearchDeskProps> = ({
   const [activeQuestionModal, setActiveQuestionModal] = useState<boolean>(false);
   const [selectedClaimId, setSelectedClaimId] = useState<string>('CLAIM C-014');
   const [isSpeakingFindings, setIsSpeakingFindings] = useState<boolean>(false);
-  const [isListeningDictation, setIsListeningDictation] = useState<boolean>(false);
 
   const scopeOptions = ['Technical', 'Literature', 'Experimental', 'Market'];
 
@@ -46,20 +46,6 @@ export const ResearchDesk: React.FC<ResearchDeskProps> = ({
     setSelectedScope(prev => 
       prev.includes(scope) ? prev.filter(s => s !== scope) : [...prev, scope]
     );
-  };
-
-  const handleVoiceDictation = () => {
-    if (isListeningDictation) {
-      voiceEngine.stopListening();
-      setIsListeningDictation(false);
-    } else {
-      setIsListeningDictation(true);
-      voiceEngine.startListening(
-        (text) => onPromptChange(text),
-        () => setIsListeningDictation(false),
-        () => setIsListeningDictation(false)
-      );
-    }
   };
 
   const handleSpeakSummary = (textToSpeak?: string) => {
@@ -116,26 +102,12 @@ export const ResearchDesk: React.FC<ResearchDeskProps> = ({
           </span>
         </div>
 
-        <div className="space-y-1.5 relative">
-          <textarea
-            value={taskPrompt}
-            onChange={(e) => onPromptChange(e.target.value)}
-            placeholder="Enter your technical research question... (e.g. What are the most effective AI methods for detecting micro-bending and gradual attenuation in optical fiber networks?)"
-            className="w-full bg-[#0F141C] border border-[#212936] rounded-sm p-3 pr-10 text-xs text-[#F1F5F9] placeholder-[#94A3B8]/60 focus:outline-none focus:border-[#38BDF8] min-h-[65px] resize-y font-sans leading-relaxed"
-          />
-
-          <button
-            onClick={handleVoiceDictation}
-            className={`absolute right-2 top-2 p-1.5 rounded transition-all cursor-pointer ${
-              isListeningDictation
-                ? 'bg-[#38BDF8] text-[#0F141C] animate-pulse'
-                : 'bg-[#161D27] text-[#94A3B8] hover:text-[#38BDF8] border border-[#212936]'
-            }`}
-            title={isListeningDictation ? 'Listening to your voice...' : 'Click to dictate prompt using voice'}
-          >
-            <Mic className="w-4 h-4" />
-          </button>
-        </div>
+        <PredictiveTextarea
+          value={taskPrompt}
+          onChange={onPromptChange}
+          placeholder="Enter your technical research question... (e.g. Evaluate 3-level ANPC SiC MOSFET inverter efficiency at 10kHz PWM)"
+          minRows={3}
+        />
 
         <div className="flex flex-wrap items-center justify-between gap-2 pt-1 font-mono text-[11px]">
           <div className="flex items-center gap-2">
