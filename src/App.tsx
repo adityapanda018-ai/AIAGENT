@@ -20,6 +20,8 @@ import { FloatingTelemetryDock } from './components/FloatingTelemetryDock';
 import { FullSystemTestModal } from './components/FullSystemTestModal';
 import { ProductTourModal } from './components/ProductTourModal';
 import { UserAuthModal } from './components/UserAuthModal';
+import { RoiCalculatorModal } from './components/RoiCalculatorModal';
+import { DeveloperApiDocsModal } from './components/DeveloperApiDocsModal';
 import { KnowledgeBase } from './components/KnowledgeBase';
 import { TemplateGallery } from './components/TemplateGallery';
 import { ValidationDashboard } from './components/ValidationDashboard';
@@ -64,6 +66,8 @@ export function App() {
   const [isRunComparisonOpen, setIsRunComparisonOpen] = useState<boolean>(false);
   const [isFullTestOpen, setIsFullTestOpen] = useState<boolean>(false);
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
+  const [isRoiModalOpen, setIsRoiModalOpen] = useState<boolean>(false);
+  const [isApiDocsModalOpen, setIsApiDocsModalOpen] = useState<boolean>(false);
   const [isSplitView, setIsSplitView] = useState<boolean>(false);
 
   const [theme, setTheme] = useState<string>('dark');
@@ -314,6 +318,8 @@ export function App() {
             }
           }}
           onNewAgent={() => setIsAgentBuilderOpen(true)}
+          onOpenRoiCalculator={() => setIsRoiModalOpen(true)}
+          onOpenApiDocs={() => setIsApiDocsModalOpen(true)}
         />
 
         {/* 3. RIGHT CONTENT PANE */}
@@ -532,6 +538,8 @@ export function App() {
         onOpenThemeModal={() => setIsThemeModalOpen(true)}
         onOpenTestModal={() => setIsFullTestOpen(true)}
         onOpenTour={() => setIsTourOpen(true)}
+        onOpenRoiCalculator={() => setIsRoiModalOpen(true)}
+        onOpenApiDocs={() => setIsApiDocsModalOpen(true)}
         onExportJupyter={handleExportJupyter}
         onExportLatex={handleExportLatex}
       />
@@ -570,6 +578,18 @@ export function App() {
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}
+      />
+
+      <RoiCalculatorModal
+        isOpen={isRoiModalOpen}
+        onClose={() => setIsRoiModalOpen(false)}
+        onOpenSimulator={() => setIsSimulatorOpen(true)}
+        onOpenTour={() => setIsTourOpen(true)}
+      />
+
+      <DeveloperApiDocsModal
+        isOpen={isApiDocsModalOpen}
+        onClose={() => setIsApiDocsModalOpen(false)}
       />
     </div>
   );

@@ -12,7 +12,9 @@ import {
   Zap,
   ArrowRight,
   Sparkles,
-  Compass
+  Compass,
+  TrendingUp,
+  Code
 } from 'lucide-react';
 import { playClickSound } from '../services/soundFx';
 
@@ -36,6 +38,8 @@ interface CommandPaletteModalProps {
   onOpenThemeModal: () => void;
   onOpenTestModal: () => void;
   onOpenTour: () => void;
+  onOpenRoiCalculator?: () => void;
+  onOpenApiDocs?: () => void;
   onExportJupyter: () => void;
   onExportLatex: () => void;
 }
@@ -51,6 +55,8 @@ export const CommandPaletteModal: FC<CommandPaletteModalProps> = ({
   onOpenThemeModal,
   onOpenTestModal,
   onOpenTour,
+  onOpenRoiCalculator,
+  onOpenApiDocs,
   onExportJupyter,
   onExportLatex
 }) => {
@@ -145,6 +151,22 @@ export const CommandPaletteModal: FC<CommandPaletteModalProps> = ({
       shortcut: 'P',
       icon: Palette,
       action: () => { onOpenThemeModal(); onClose(); }
+    },
+    {
+      id: 'cmd-roi-calculator',
+      title: 'Open Commercial Converter ROI & Energy Amortization Calculator',
+      category: 'Simulation',
+      shortcut: 'R',
+      icon: TrendingUp,
+      action: () => { if (onOpenRoiCalculator) onOpenRoiCalculator(); onClose(); }
+    },
+    {
+      id: 'cmd-api-docs',
+      title: 'Open Developer REST API & Python SDK Documentation',
+      category: 'System',
+      shortcut: 'D',
+      icon: Code,
+      action: () => { if (onOpenApiDocs) onOpenApiDocs(); onClose(); }
     },
     {
       id: 'cmd-tour-open',
