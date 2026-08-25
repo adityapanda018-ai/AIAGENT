@@ -1,5 +1,5 @@
 import { type FC, useState, useEffect } from 'react';
-import { Cpu, Key, Database, Network, Info, Play, Palette } from 'lucide-react';
+import { Cpu, Key, Network, Info, Play, Palette } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import { SystemArchitectureModal } from './SystemArchitectureModal';
 import { WinningDemoScriptModal } from './WinningDemoScriptModal';
@@ -60,8 +60,8 @@ export const Header: FC<HeaderProps> = (props) => {
       <div className="h-12 px-4 flex items-center justify-between">
         {/* Brand & Subtitle */}
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 bg-[#161D27] border border-[#212936] flex items-center justify-center text-[#38BDF8] font-bold rounded-sm">
-            <Database className="w-4 h-4 text-[#38BDF8]" />
+          <div className="w-8 h-8 bg-[#161D27] border border-[#38BDF8]/40 flex items-center justify-center rounded-sm shadow-md overflow-hidden p-1 group hover:border-[#38BDF8] transition-all">
+            <img src="/nexus-logo.svg" alt="NexusAI Logo" className="w-full h-full object-contain" />
           </div>
           <div>
             <div className="flex items-center gap-2">

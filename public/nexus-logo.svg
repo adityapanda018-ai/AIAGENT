@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="nexusGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#818CF8" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+    <linearGradient id="nexusGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+    <radialGradient id="nexusCore" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="1" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0" />
+    </radialGradient>
+    <filter id="nexusGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Outer Hexagonal Quantum Shield -->
+  <polygon points="24,4 42,14 42,34 24,44 6,34 6,14" 
+           stroke="url(#nexusGrad1)" stroke-width="2.5" 
+           fill="#0B0F17" fill-opacity="0.9" filter="url(#nexusGlow)" />
+
+  <!-- Inner Dynamic Neural Facets -->
+  <polygon points="24,11 36,18 36,30 24,37 12,30 12,18" 
+           stroke="#38BDF8" stroke-width="1.2" stroke-dasharray="2 1" 
+           fill="none" opacity="0.6" />
+
+  <!-- Tri-Nexus Orbit Rays -->
+  <line x1="24" y1="4" x2="24" y2="24" stroke="url(#nexusGrad1)" stroke-width="2" />
+  <line x1="42" y1="34" x2="24" y2="24" stroke="url(#nexusGrad2)" stroke-width="2" />
+  <line x1="6" y1="34" x2="24" y2="24" stroke="url(#nexusGrad1)" stroke-width="2" />
+
+  <!-- Center Quantum Singularity Core -->
+  <circle cx="24" cy="24" r="5" fill="url(#nexusGrad1)" />
+  <circle cx="24" cy="24" r="2.2" fill="#FFFFFF" />
+
+  <!-- Orbit Nodes -->
+  <circle cx="24" cy="11" r="2" fill="#38BDF8" />
+  <circle cx="36" cy="18" r="2" fill="#818CF8" />
+  <circle cx="36" cy="30" r="2" fill="#10B981" />
+  <circle cx="24" cy="37" r="2" fill="#38BDF8" />
+  <circle cx="12" cy="30" r="2" fill="#818CF8" />
+  <circle cx="12" cy="18" r="2" fill="#10B981" />
+</svg>
