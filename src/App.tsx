@@ -290,6 +290,8 @@ export function App() {
         onOpenTokenMeter={() => setIsTokenMeterOpen(true)}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         onOpenTour={() => setIsTourOpen(true)}
+        onOpenRoiCalculator={() => setIsRoiModalOpen(true)}
+        onOpenApiDocs={() => setIsApiDocsModalOpen(true)}
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onUpdateProfile={handleUpdateProfile}
         onSignOut={handleSignOut}

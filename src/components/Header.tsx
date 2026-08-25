@@ -9,7 +9,9 @@ import {
   ShieldCheck,
   Zap,
   Layers,
-  Search
+  Search,
+  TrendingUp,
+  Code
 } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import type { UserProfile } from '../types/auth';
@@ -30,6 +32,8 @@ interface HeaderProps {
   onOpenTokenMeter: () => void;
   onOpenCommandPalette: () => void;
   onOpenTour: () => void;
+  onOpenRoiCalculator?: () => void;
+  onOpenApiDocs?: () => void;
   onOpenAuth: () => void;
   onUpdateProfile: (updated: UserProfile) => void;
   onSignOut: () => void;
@@ -46,6 +50,8 @@ export const Header: FC<HeaderProps> = ({
   onOpenTokenMeter,
   onOpenCommandPalette,
   onOpenTour,
+  onOpenRoiCalculator,
+  onOpenApiDocs,
   onOpenAuth,
   onUpdateProfile,
   onSignOut
@@ -119,6 +125,30 @@ export const Header: FC<HeaderProps> = ({
             <span>Search</span>
             <kbd className="text-[9px] bg-[#0F141C] border border-[#212936] px-1 py-0.2 rounded text-[#94A3B8]">⌘K</kbd>
           </button>
+
+          {/* ROI Calculator */}
+          {onOpenRoiCalculator && (
+            <button
+              onClick={onOpenRoiCalculator}
+              className="h-8 px-2.5 rounded bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981]/20 border border-[#10B981]/30 font-bold flex items-center gap-1.5 cursor-pointer transition-all text-[11px]"
+              title="Open Commercial Converter ROI & Energy Amortization Calculator"
+            >
+              <TrendingUp className="w-3.5 h-3.5 text-[#10B981]" />
+              <span className="hidden md:inline">ROI</span>
+            </button>
+          )}
+
+          {/* Developer API & SDK */}
+          {onOpenApiDocs && (
+            <button
+              onClick={onOpenApiDocs}
+              className="h-8 px-2.5 rounded bg-[#38BDF8]/10 text-[#38BDF8] hover:bg-[#38BDF8]/20 border border-[#38BDF8]/30 font-bold flex items-center gap-1.5 cursor-pointer transition-all text-[11px]"
+              title="Open Developer REST API & Python SDK Hub"
+            >
+              <Code className="w-3.5 h-3.5 text-[#38BDF8]" />
+              <span className="hidden md:inline">API</span>
+            </button>
+          )}
 
           {/* Verification Suite */}
           <button
