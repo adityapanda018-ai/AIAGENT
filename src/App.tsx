@@ -7,6 +7,7 @@ import { ArtifactWorkspace } from './components/ArtifactWorkspace';
 import { AgentBuilderModal } from './components/AgentBuilderModal';
 import { SettingsModal } from './components/SettingsModal';
 import { ThemeCustomizerModal } from './components/ThemeCustomizerModal';
+import { QuantumNeuralCanvas } from './components/QuantumNeuralCanvas';
 import { InteractiveSimulatorModal } from './components/InteractiveSimulatorModal';
 import { InteractiveSimulatorView } from './components/InteractiveSimulatorView';
 import { AcademicSearchModal } from './components/AcademicSearchModal';
@@ -21,6 +22,7 @@ import { KnowledgeIndexSearch } from './components/KnowledgeIndexSearch';
 import { FailureRecoveryView } from './components/FailureRecoveryView';
 import { SystemValidationView } from './components/SystemValidationView';
 import { MessagingIntegrationsView } from './components/MessagingIntegrationsView';
+import { isSoundEnabled, setSoundEnabled, playSwitchSound } from './services/soundFx';
 
 import type { Agent, ExecutionStep, Artifact, ApiSettings, NavTab, KnowledgeDocument } from './types/agent';
 import { DEFAULT_AGENTS, INITIAL_ARTIFACTS, DEFAULT_KNOWLEDGE } from './data/defaultData';
@@ -48,6 +50,9 @@ export function App() {
   const [theme, setTheme] = useState<string>('dark');
   const [background, setBackground] = useState<string>('grid');
   const [highlight, setHighlight] = useState<string>('cyan');
+  const [particleIntensity, setParticleIntensity] = useState<'off' | 'subtle' | 'high'>('subtle');
+  const [soundActive, setSoundActive] = useState<boolean>(isSoundEnabled());
+  const [isHologramMode, setIsHologramMode] = useState<boolean>(false);
 
   const [settings, setSettings] = useState<ApiSettings>({
     activeProvider: 'simulation',
@@ -77,6 +82,12 @@ export function App() {
 
     const savedHl = localStorage.getItem('nexusai_hl');
     if (savedHl) setHighlight(savedHl);
+
+    const savedParticle = localStorage.getItem('nexusai_particle') as 'off' | 'subtle' | 'high';
+    if (savedParticle) setParticleIntensity(savedParticle);
+
+    const savedHologram = localStorage.getItem('nexusai_hologram') === 'true';
+    setIsHologramMode(savedHologram);
   }, []);
 
   const handleSelectTheme = (newTheme: string) => {
@@ -94,10 +105,32 @@ export function App() {
     localStorage.setItem('nexusai_hl', newHl);
   };
 
+  const handleSelectParticleIntensity = (intensity: 'off' | 'subtle' | 'high') => {
+    setParticleIntensity(intensity);
+    localStorage.setItem('nexusai_particle', intensity);
+  };
+
+  const handleToggleSound = () => {
+    const next = !soundActive;
+    setSoundActive(next);
+    setSoundEnabled(next);
+  };
+
+  const handleToggleHologram = () => {
+    const next = !isHologramMode;
+    setIsHologramMode(next);
+    localStorage.setItem('nexusai_hologram', String(next));
+  };
+
   const handleResetThemeDefaults = () => {
     handleSelectTheme('dark');
     handleSelectBg('grid');
     handleSelectHl('cyan');
+    handleSelectParticleIntensity('subtle');
+    setSoundActive(true);
+    setSoundEnabled(true);
+    setIsHologramMode(false);
+    localStorage.setItem('nexusai_hologram', 'false');
   };
 
   const handleSaveSettings = (newSettings: ApiSettings) => {
@@ -169,9 +202,12 @@ export function App() {
     <div 
       data-theme={theme}
       data-highlight={highlight}
-      className={`min-h-screen h-screen flex flex-col text-[#F1F5F9] font-sans overflow-hidden select-none bg-texture-${background}`}
+      className={`min-h-screen h-screen flex flex-col text-[#F1F5F9] font-sans overflow-hidden select-none bg-texture-${background} ${isHologramMode ? 'hologram-mode' : ''}`}
       style={{ backgroundColor: 'var(--bg-main, #0F141C)' }}
     >
+      {/* Interactive Quantum Neural Canvas Background */}
+      <QuantumNeuralCanvas intensity={particleIntensity} highlightColor={highlight} />
+
       {/* 1. HEADER */}
       <Header
         settings={settings}
@@ -185,14 +221,18 @@ export function App() {
       />
 
       {/* MAIN WORKSPACE GRID */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden relative z-10">
         {/* 2. SIDEBAR */}
         <Sidebar
           activeTab={activeTab}
-          onSelectTab={setActiveTab}
+          onSelectTab={(tab) => {
+            playSwitchSound();
+            setActiveTab(tab);
+          }}
           agents={agents}
           selectedAgentId={selectedAgentId}
           onSelectAgent={(agentId) => {
+            playSwitchSound();
             setSelectedAgentId(agentId);
             setActiveTab('dashboard');
             const agent = agents.find(a => a.id === agentId);
@@ -344,6 +384,12 @@ export function App() {
         onSelectBackground={handleSelectBg}
         currentHighlight={highlight}
         onSelectHighlight={handleSelectHl}
+        particleIntensity={particleIntensity}
+        onSelectParticleIntensity={handleSelectParticleIntensity}
+        isSoundEnabled={soundActive}
+        onToggleSound={handleToggleSound}
+        isHologramMode={isHologramMode}
+        onToggleHologram={handleToggleHologram}
         onResetDefaults={handleResetThemeDefaults}
       />
 

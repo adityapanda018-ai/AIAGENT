@@ -159,6 +159,26 @@
   --accent-color: #0284C7;
 }
 
+[data-theme="matrix"] {
+  --bg-main: #021207;
+  --bg-card: #041D0D;
+  --bg-panel: #021207;
+  --border-color: #0B3D1B;
+  --text-primary: #00FF66;
+  --text-secondary: #5CFF9D;
+  --accent-color: #00FF66;
+}
+
+[data-theme="titanium"] {
+  --bg-main: #080D1A;
+  --bg-card: #0F172A;
+  --bg-panel: #080D1A;
+  --border-color: #1E293B;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --accent-color: #38BDF8;
+}
+
 /* 🌟 DYNAMIC HIGHLIGHT OVERRIDES */
 [data-highlight="cyan"] { --accent-color: #38BDF8 !important; }
 [data-highlight="emerald"] { --accent-color: #10B981 !important; }
@@ -186,6 +206,23 @@
 
 .bg-texture-glow {
   background-image: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 60%);
+}
+
+/* 📺 HOLOGRAPHIC HUD SCANLINE MODE */
+.hologram-mode {
+  position: relative;
+}
+
+.hologram-mode::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.35;
 }
 
 /* Print Styles */
