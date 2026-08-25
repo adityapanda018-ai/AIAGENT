@@ -11,7 +11,8 @@ import {
   ShieldCheck, 
   Zap,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Compass
 } from 'lucide-react';
 import { playClickSound } from '../services/soundFx';
 
@@ -34,6 +35,7 @@ interface CommandPaletteModalProps {
   onOpenComparison: () => void;
   onOpenThemeModal: () => void;
   onOpenTestModal: () => void;
+  onOpenTour: () => void;
   onExportJupyter: () => void;
   onExportLatex: () => void;
 }
@@ -48,6 +50,7 @@ export const CommandPaletteModal: FC<CommandPaletteModalProps> = ({
   onOpenComparison,
   onOpenThemeModal,
   onOpenTestModal,
+  onOpenTour,
   onExportJupyter,
   onExportLatex
 }) => {
@@ -142,6 +145,14 @@ export const CommandPaletteModal: FC<CommandPaletteModalProps> = ({
       shortcut: 'P',
       icon: Palette,
       action: () => { onOpenThemeModal(); onClose(); }
+    },
+    {
+      id: 'cmd-tour-open',
+      title: 'Launch Interactive Product Tour & Onboarding Guide',
+      category: 'System',
+      shortcut: '?',
+      icon: Compass,
+      action: () => { onOpenTour(); onClose(); }
     },
     {
       id: 'cmd-run-tests',

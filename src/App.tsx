@@ -18,6 +18,7 @@ import { CircuitTopologyModal } from './components/CircuitTopologyModal';
 import { RunComparisonModal } from './components/RunComparisonModal';
 import { FloatingTelemetryDock } from './components/FloatingTelemetryDock';
 import { FullSystemTestModal } from './components/FullSystemTestModal';
+import { ProductTourModal } from './components/ProductTourModal';
 import { KnowledgeBase } from './components/KnowledgeBase';
 import { TemplateGallery } from './components/TemplateGallery';
 import { ValidationDashboard } from './components/ValidationDashboard';
@@ -56,6 +57,7 @@ export function App() {
   const [isCircuitTopologyOpen, setIsCircuitTopologyOpen] = useState<boolean>(false);
   const [isRunComparisonOpen, setIsRunComparisonOpen] = useState<boolean>(false);
   const [isFullTestOpen, setIsFullTestOpen] = useState<boolean>(false);
+  const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
   const [isSplitView, setIsSplitView] = useState<boolean>(false);
 
   const [theme, setTheme] = useState<string>('dark');
@@ -110,6 +112,12 @@ export function App() {
 
     const savedHologram = localStorage.getItem('nexusai_hologram') === 'true';
     setIsHologramMode(savedHologram);
+
+    const tourSeen = localStorage.getItem('nexusai_tour_seen');
+    if (!tourSeen) {
+      setIsTourOpen(true);
+      localStorage.setItem('nexusai_tour_seen', 'true');
+    }
   }, []);
 
   const handleSelectTheme = (newTheme: string) => {
@@ -255,6 +263,7 @@ export function App() {
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         onOpenCircuitTopology={() => setIsCircuitTopologyOpen(true)}
         onOpenRunComparison={() => setIsRunComparisonOpen(true)}
+        onOpenTour={() => setIsTourOpen(true)}
       />
 
       {/* MAIN WORKSPACE GRID */}
@@ -497,6 +506,7 @@ export function App() {
         onOpenComparison={() => setIsRunComparisonOpen(true)}
         onOpenThemeModal={() => setIsThemeModalOpen(true)}
         onOpenTestModal={() => setIsFullTestOpen(true)}
+        onOpenTour={() => setIsTourOpen(true)}
         onExportJupyter={handleExportJupyter}
         onExportLatex={handleExportLatex}
       />
@@ -514,6 +524,21 @@ export function App() {
       <FullSystemTestModal
         isOpen={isFullTestOpen}
         onClose={() => setIsFullTestOpen(false)}
+      />
+
+      <ProductTourModal
+        isOpen={isTourOpen}
+        onClose={() => setIsTourOpen(false)}
+        onStartSampleRun={() => {
+          const prompt = 'Evaluate the feasibility of silicon carbide based multilevel inverters for 100 kW industrial applications.';
+          setTaskPrompt(prompt);
+          setActiveTab('dashboard');
+          handleStartInvestigation(prompt, ['Technical'], 'All', 'Detailed', 'Strict');
+        }}
+        onOpenSimulator={() => setIsSimulatorOpen(true)}
+        onOpenCircuitTopology={() => setIsCircuitTopologyOpen(true)}
+        onOpenRunComparison={() => setIsRunComparisonOpen(true)}
+        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
       />
     </div>
   );

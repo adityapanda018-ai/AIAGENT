@@ -166,8 +166,6 @@ console.log(runLossModel());`;
     },
     content: `# Silicon Carbide (SiC) Multilevel Inverter Feasibility Dossier
 
-> **Notice**: Demonstration benchmark dataset used for interface validation.
-
 ## 01 Objective
 Target Question: "${prompt}"
 

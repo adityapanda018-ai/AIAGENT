@@ -1,5 +1,5 @@
 import { type FC, useState, useEffect } from 'react';
-import { Cpu, Key, Network, ShieldCheck, Palette, Activity, Search, Share2, DollarSign, Command, Zap, Layers } from 'lucide-react';
+import { Cpu, Key, Network, ShieldCheck, Palette, Activity, Search, Share2, DollarSign, Command, Zap, Layers, Compass } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import { SystemArchitectureModal } from './SystemArchitectureModal';
 import { FullSystemTestModal } from './FullSystemTestModal';
@@ -16,6 +16,7 @@ interface HeaderProps {
   onOpenCommandPalette: () => void;
   onOpenCircuitTopology: () => void;
   onOpenRunComparison: () => void;
+  onOpenTour: () => void;
 }
 
 export const Header: FC<HeaderProps> = (props) => {
@@ -28,7 +29,8 @@ export const Header: FC<HeaderProps> = (props) => {
     onOpenTokenMeter,
     onOpenCommandPalette,
     onOpenCircuitTopology,
-    onOpenRunComparison
+    onOpenRunComparison,
+    onOpenTour
   } = props;
 
   const [timeStr, setTimeStr] = useState<string>('');
@@ -173,6 +175,16 @@ export const Header: FC<HeaderProps> = (props) => {
           >
             <DollarSign className="w-3 h-3 text-[#10B981]" />
             <span>$0.034</span>
+          </button>
+
+          {/* Interactive Onboarding Tour Button */}
+          <button
+            onClick={onOpenTour}
+            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer text-[#38BDF8] border-[#38BDF8]/40 hover:border-[#38BDF8] bg-[#38BDF8]/10"
+            title="Launch Interactive Product Tour & Onboarding Guide"
+          >
+            <Compass className="w-3.5 h-3.5 text-[#38BDF8]" />
+            <span>[ TOUR ]</span>
           </button>
 
           {/* [RUN ALL TESTS] System Verification Button */}
