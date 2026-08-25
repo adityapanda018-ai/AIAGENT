@@ -13,7 +13,8 @@ import {
   BookOpen, 
   Activity,
   MessageSquare,
-  CheckCircle2
+  CheckCircle2,
+  Zap
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -38,6 +39,7 @@ export const Sidebar: FC<SidebarProps> = ({
   // User Specification: Exact Verbatim Feature Map Layout
   const featureMapItems = [
     { id: 'dashboard' as NavTab, title: 'Research Desk', subtitle: 'Active investigation workstation', icon: Terminal },
+    { id: 'simulator' as NavTab, title: 'Loss Simulator', subtitle: 'Dynamic sweeps & thermal bounds', icon: Zap },
     { id: 'runs' as NavTab, title: 'Analysis Runs', subtitle: 'Investigation history (0248, 0247...)', icon: History },
     { id: 'knowledge' as NavTab, title: 'Evidence Library', subtitle: 'Primary sources & DOIs', icon: Database },
     { id: 'templates' as NavTab, title: 'Research Modules', subtitle: 'Apex, Nova, DataPulse, Vortex', icon: Layers },

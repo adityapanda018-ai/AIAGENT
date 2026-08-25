@@ -8,6 +8,7 @@ import { AgentBuilderModal } from './components/AgentBuilderModal';
 import { SettingsModal } from './components/SettingsModal';
 import { ThemeCustomizerModal } from './components/ThemeCustomizerModal';
 import { InteractiveSimulatorModal } from './components/InteractiveSimulatorModal';
+import { InteractiveSimulatorView } from './components/InteractiveSimulatorView';
 import { AcademicSearchModal } from './components/AcademicSearchModal';
 import { ShareInvestigationModal } from './components/ShareInvestigationModal';
 import { TokenCostMeter } from './components/TokenCostMeter';
@@ -244,6 +245,12 @@ export function App() {
                   artifacts={artifacts}
                 />
               </div>
+            </div>
+          )}
+
+          {activeTab === 'simulator' && (
+            <div className="h-full">
+              <InteractiveSimulatorView />
             </div>
           )}
 
