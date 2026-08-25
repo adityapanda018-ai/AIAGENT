@@ -1,5 +1,5 @@
 import { type FC, useState, useEffect } from 'react';
-import { Cpu, Key, Network, ShieldCheck, Palette, Activity, Search, Share2, DollarSign } from 'lucide-react';
+import { Cpu, Key, Network, ShieldCheck, Palette, Activity, Search, Share2, DollarSign, Command, Zap, Layers } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import { SystemArchitectureModal } from './SystemArchitectureModal';
 import { FullSystemTestModal } from './FullSystemTestModal';
@@ -13,6 +13,9 @@ interface HeaderProps {
   onOpenAcademicSearch: () => void;
   onOpenShareModal: () => void;
   onOpenTokenMeter: () => void;
+  onOpenCommandPalette: () => void;
+  onOpenCircuitTopology: () => void;
+  onOpenRunComparison: () => void;
 }
 
 export const Header: FC<HeaderProps> = (props) => {
@@ -22,7 +25,10 @@ export const Header: FC<HeaderProps> = (props) => {
     onOpenSimulator,
     onOpenAcademicSearch,
     onOpenShareModal,
-    onOpenTokenMeter
+    onOpenTokenMeter,
+    onOpenCommandPalette,
+    onOpenCircuitTopology,
+    onOpenRunComparison
   } = props;
 
   const [timeStr, setTimeStr] = useState<string>('');
@@ -59,9 +65,19 @@ export const Header: FC<HeaderProps> = (props) => {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 text-[11px] whitespace-nowrap text-[#10B981] font-semibold">
-          <span className="text-[10px]">●</span>
-          <span>SYSTEM OPERATIONAL</span>
+        <div className="flex items-center gap-3 text-[11px] whitespace-nowrap text-[#10B981] font-semibold">
+          {/* Quick Command Palette Keyboard Hint */}
+          <button
+            onClick={onOpenCommandPalette}
+            className="flex items-center gap-1 text-[10px] text-[#94A3B8] hover:text-[#38BDF8] bg-[#0F141C] border border-[#212936] px-2 py-0.2 rounded cursor-pointer transition-colors"
+          >
+            <Command className="w-3 h-3 text-[#38BDF8]" />
+            <span>Cmd/Ctrl + K</span>
+          </button>
+          <div className="flex items-center gap-1">
+            <span className="text-[10px]">●</span>
+            <span>SYSTEM OPERATIONAL</span>
+          </div>
         </div>
       </div>
 
@@ -89,20 +105,50 @@ export const Header: FC<HeaderProps> = (props) => {
 
         {/* Workstation Controls */}
         <div className="flex items-center gap-1.5 font-mono text-xs">
+          {/* Command Palette Button */}
+          <button
+            onClick={onOpenCommandPalette}
+            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
+            title="Open Command Palette (Ctrl + K)"
+          >
+            <Command className="w-3.5 h-3.5 text-[#38BDF8]" />
+            <span>[ ⌘K ]</span>
+          </button>
+
+          {/* Circuit Schematic Button */}
+          <button
+            onClick={onOpenCircuitTopology}
+            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#F59E0B]/50"
+            title="Inspect 3-Level ANPC Hardware Circuit Schematic"
+          >
+            <Zap className="w-3.5 h-3.5 text-[#F59E0B]" />
+            <span>[ CIRCUIT ]</span>
+          </button>
+
+          {/* Diff Matrix Button */}
+          <button
+            onClick={onOpenRunComparison}
+            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#10B981]/50"
+            title="Compare Investigation Runs (0248 vs 0247)"
+          >
+            <Layers className="w-3.5 h-3.5 text-[#10B981]" />
+            <span>[ DIFF ]</span>
+          </button>
+
           {/* Engineering Simulator Button */}
           <button
             onClick={onOpenSimulator}
-            className="btn-secondary py-1 px-2.5 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
+            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
             title="Open Interactive Engineering Loss & Thermal Simulator"
           >
             <Activity className="w-3.5 h-3.5 text-[#38BDF8]" />
-            <span>[ SIMULATOR ]</span>
+            <span>[ SIM ]</span>
           </button>
 
           {/* Academic Search Connector Button */}
           <button
             onClick={onOpenAcademicSearch}
-            className="btn-secondary py-1 px-2.5 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
+            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
             title="Search arXiv, IEEE, PubMed & Semantic Scholar"
           >
             <Search className="w-3.5 h-3.5 text-[#818CF8]" />
@@ -112,7 +158,7 @@ export const Header: FC<HeaderProps> = (props) => {
           {/* Share Dossier Button */}
           <button
             onClick={onOpenShareModal}
-            className="btn-secondary py-1 px-2.5 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
+            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
             title="Generate Shareable Dossier Link & QR Code"
           >
             <Share2 className="w-3.5 h-3.5 text-[#10B981]" />

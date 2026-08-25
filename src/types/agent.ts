@@ -6,7 +6,7 @@ export type AgentRole =
   | 'Technical Writing'
   | 'Custom';
 
-export type NavTab = 'dashboard' | 'simulator' | 'runs' | 'knowledge' | 'templates' | 'index' | 'validation' | 'observability' | 'resilience' | 'system_validation' | 'messaging';
+export type NavTab = 'dashboard' | 'simulator' | 'runs' | 'knowledge' | 'templates' | 'index' | 'search' | 'validation' | 'observability' | 'resilience' | 'failure' | 'system_validation' | 'tests' | 'messaging' | 'integrations';
 
 export type LLMModel = 'gpt-4o' | 'gpt-4-turbo' | 'gemini-1.5-pro' | 'gemini-1.5-flash' | 'claude-3-5-sonnet' | 'llama-3.1-70b' | 'deepseek-r1' | 'simulation' | string;
 

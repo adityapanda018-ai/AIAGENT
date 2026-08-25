@@ -13,6 +13,11 @@ import { InteractiveSimulatorView } from './components/InteractiveSimulatorView'
 import { AcademicSearchModal } from './components/AcademicSearchModal';
 import { ShareInvestigationModal } from './components/ShareInvestigationModal';
 import { TokenCostMeter } from './components/TokenCostMeter';
+import { CommandPaletteModal } from './components/CommandPaletteModal';
+import { CircuitTopologyModal } from './components/CircuitTopologyModal';
+import { RunComparisonModal } from './components/RunComparisonModal';
+import { FloatingTelemetryDock } from './components/FloatingTelemetryDock';
+import { FullSystemTestModal } from './components/FullSystemTestModal';
 import { KnowledgeBase } from './components/KnowledgeBase';
 import { TemplateGallery } from './components/TemplateGallery';
 import { ValidationDashboard } from './components/ValidationDashboard';
@@ -23,6 +28,7 @@ import { FailureRecoveryView } from './components/FailureRecoveryView';
 import { SystemValidationView } from './components/SystemValidationView';
 import { MessagingIntegrationsView } from './components/MessagingIntegrationsView';
 import { isSoundEnabled, setSoundEnabled, playSwitchSound } from './services/soundFx';
+import { downloadBlob, generateJupyterNotebook, generateLatexPaper } from './services/exportGenerators';
 
 import type { Agent, ExecutionStep, Artifact, ApiSettings, NavTab, KnowledgeDocument } from './types/agent';
 import { DEFAULT_AGENTS, INITIAL_ARTIFACTS, DEFAULT_KNOWLEDGE } from './data/defaultData';
@@ -46,6 +52,11 @@ export function App() {
   const [isAcademicSearchOpen, setIsAcademicSearchOpen] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [isTokenMeterOpen, setIsTokenMeterOpen] = useState<boolean>(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
+  const [isCircuitTopologyOpen, setIsCircuitTopologyOpen] = useState<boolean>(false);
+  const [isRunComparisonOpen, setIsRunComparisonOpen] = useState<boolean>(false);
+  const [isFullTestOpen, setIsFullTestOpen] = useState<boolean>(false);
+  const [isSplitView, setIsSplitView] = useState<boolean>(false);
 
   const [theme, setTheme] = useState<string>('dark');
   const [background, setBackground] = useState<string>('grid');
@@ -64,6 +75,17 @@ export function App() {
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const selectedAgent = agents.find(a => a.id === selectedAgentId) || agents[0];
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
 
   useEffect(() => {
     const savedKeys = localStorage.getItem('nexusai_api_settings');
@@ -198,6 +220,18 @@ export function App() {
     setDocuments(prev => prev.filter(d => d.id !== id));
   };
 
+  const handleExportJupyter = () => {
+    const activeArt = artifacts[artifacts.length - 1] || INITIAL_ARTIFACTS[0];
+    const ipynbContent = generateJupyterNotebook(activeArt.content || '', activeArt.title || 'SiC Investigation');
+    downloadBlob(ipynbContent, `NexusAI_Investigation_${activeArt.id || '0248'}.ipynb`, 'application/json');
+  };
+
+  const handleExportLatex = () => {
+    const activeArt = artifacts[artifacts.length - 1] || INITIAL_ARTIFACTS[0];
+    const texContent = generateLatexPaper(activeArt.content || '', activeArt.title || 'SiC Feasibility Analysis');
+    downloadBlob(texContent, `NexusAI_Paper_${activeArt.id || '0248'}.tex`, 'text/plain');
+  };
+
   return (
     <div 
       data-theme={theme}
@@ -218,6 +252,9 @@ export function App() {
         onOpenAcademicSearch={() => setIsAcademicSearchOpen(true)}
         onOpenShareModal={() => setIsShareModalOpen(true)}
         onOpenTokenMeter={() => setIsTokenMeterOpen(true)}
+        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+        onOpenCircuitTopology={() => setIsCircuitTopologyOpen(true)}
+        onOpenRunComparison={() => setIsRunComparisonOpen(true)}
       />
 
       {/* MAIN WORKSPACE GRID */}
@@ -248,70 +285,95 @@ export function App() {
         {/* 3. RIGHT CONTENT PANE */}
         <main className="flex-1 overflow-y-auto bg-[#0F141C] p-4">
           {activeTab === 'dashboard' && (
-            /* User Specification: Exact Vertical Stack Order Layout */
-            <div className="space-y-4 max-w-7xl mx-auto pb-8">
-              {/* RESEARCH OBJECTIVE, 7-STAGE PIPELINE, FINDINGS & EVIDENCE */}
-              <ResearchDesk
-                selectedAgent={selectedAgent}
-                taskPrompt={taskPrompt}
-                onPromptChange={setTaskPrompt}
-                isRunning={isRunning}
-                onStartInvestigation={handleStartInvestigation}
-                onStopInvestigation={handleStopTask}
-                steps={steps}
-              />
-
-              {/* TELEMETRY / ACTIVITY STREAM */}
-              <div className="h-96">
-                <ExecutionVisualizer
-                  steps={steps}
+            isSplitView ? (
+              /* Split View: Dual Pane Layout */
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 h-full pb-12">
+                <div className="space-y-4 overflow-y-auto pr-1">
+                  <ResearchDesk
+                    selectedAgent={selectedAgent}
+                    taskPrompt={taskPrompt}
+                    onPromptChange={setTaskPrompt}
+                    isRunning={isRunning}
+                    onStartInvestigation={handleStartInvestigation}
+                    onStopInvestigation={handleStopTask}
+                    steps={steps}
+                  />
+                  <div className="h-80">
+                    <ExecutionVisualizer
+                      steps={steps}
+                      isRunning={isRunning}
+                    />
+                  </div>
+                  <ArtifactWorkspace artifacts={artifacts} />
+                </div>
+                <div className="overflow-y-auto h-full pl-1">
+                  <InteractiveSimulatorView />
+                </div>
+              </div>
+            ) : (
+              /* Standard Vertical Stack Order Layout */
+              <div className="space-y-4 max-w-7xl mx-auto pb-12">
+                {/* RESEARCH OBJECTIVE, 7-STAGE PIPELINE, FINDINGS & EVIDENCE */}
+                <ResearchDesk
+                  selectedAgent={selectedAgent}
+                  taskPrompt={taskPrompt}
+                  onPromptChange={setTaskPrompt}
                   isRunning={isRunning}
+                  onStartInvestigation={handleStartInvestigation}
+                  onStopInvestigation={handleStopTask}
+                  steps={steps}
                 />
-              </div>
 
-              {/* RESEARCH DOSSIER DELIVERABLE */}
-              <div className="min-h-[500px]">
-                <ArtifactWorkspace
-                  artifacts={artifacts}
-                />
+                {/* TELEMETRY / ACTIVITY STREAM */}
+                <div className="h-96">
+                  <ExecutionVisualizer
+                    steps={steps}
+                    isRunning={isRunning}
+                  />
+                </div>
+
+                {/* VERIFIED RESEARCH ARTIFACT DOSSIERS */}
+                <ArtifactWorkspace artifacts={artifacts} />
               </div>
-            </div>
+            )
           )}
 
           {activeTab === 'simulator' && (
-            <div className="h-full">
+            <div className="max-w-7xl mx-auto h-full pb-12">
               <InteractiveSimulatorView />
             </div>
           )}
 
           {activeTab === 'runs' && (
-            <div className="h-full">
-              <InvestigationHistoryView onOpenDossier={() => setActiveTab('dashboard')} />
-            </div>
-          )}
-
-          {activeTab === 'knowledge' && (
-            <div className="h-full">
-              <KnowledgeBase 
-                documents={documents} 
-                agents={agents} 
-                onAddDocument={handleAddDocument} 
-                onDeleteDocument={handleDeleteDocument} 
+            <div className="max-w-7xl mx-auto pb-12">
+              <InvestigationHistoryView
+                onOpenDossier={() => setActiveTab('dashboard')}
               />
             </div>
           )}
 
-          {activeTab === 'validation' && (
-            <div className="h-full">
-              <ValidationDashboard />
+          {activeTab === 'knowledge' && (
+            <div className="max-w-7xl mx-auto pb-12">
+              <KnowledgeBase
+                documents={documents}
+                agents={agents}
+                onAddDocument={handleAddDocument}
+                onDeleteDocument={handleDeleteDocument}
+              />
+            </div>
+          )}
+
+          {(activeTab === 'index' || activeTab === 'search') && (
+            <div className="max-w-7xl mx-auto pb-12">
+              <KnowledgeIndexSearch />
             </div>
           )}
 
           {activeTab === 'templates' && (
-            <div className="h-full">
-              <TemplateGallery 
-                agents={agents} 
-                onLaunchTask={(ag: Agent, prompt: string) => {
+            <div className="max-w-7xl mx-auto pb-12">
+              <TemplateGallery
+                agents={agents}
+                onLaunchTask={(ag, prompt) => {
                   setSelectedAgentId(ag.id);
                   setActiveTab('dashboard');
                   handleStartInvestigation(prompt, ['Technical'], 'All', 'Detailed', 'Strict');
@@ -320,39 +382,50 @@ export function App() {
             </div>
           )}
 
-          {activeTab === 'index' && (
-            <div className="h-full">
-              <KnowledgeIndexSearch />
-            </div>
-          )}
-
-          {activeTab === 'system_validation' && (
-            <div className="h-full">
-              <SystemValidationView />
-            </div>
-          )}
-
-          {activeTab === 'resilience' && (
-            <div className="h-full">
-              <FailureRecoveryView />
-            </div>
-          )}
-
-          {activeTab === 'messaging' && (
-            <div className="h-full">
-              <MessagingIntegrationsView />
+          {activeTab === 'validation' && (
+            <div className="max-w-7xl mx-auto pb-12">
+              <ValidationDashboard />
             </div>
           )}
 
           {activeTab === 'observability' && (
-            <div className="h-full">
+            <div className="max-w-7xl mx-auto pb-12">
               <ObservabilityDashboard />
+            </div>
+          )}
+
+          {(activeTab === 'resilience' || activeTab === 'failure') && (
+            <div className="max-w-7xl mx-auto pb-12">
+              <FailureRecoveryView />
+            </div>
+          )}
+
+          {(activeTab === 'system_validation' || activeTab === 'tests') && (
+            <div className="max-w-7xl mx-auto pb-12">
+              <SystemValidationView />
+            </div>
+          )}
+
+          {(activeTab === 'messaging' || activeTab === 'integrations') && (
+            <div className="max-w-7xl mx-auto pb-12">
+              <MessagingIntegrationsView />
             </div>
           )}
         </main>
       </div>
 
-      {/* Modals */}
+      {/* Floating Telemetry Mini-Dock */}
+      <FloatingTelemetryDock
+        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+        onOpenCircuitTopology={() => setIsCircuitTopologyOpen(true)}
+        onOpenRunComparison={() => setIsRunComparisonOpen(true)}
+        isSoundActive={soundActive}
+        onToggleSound={handleToggleSound}
+        isSplitView={isSplitView}
+        onToggleSplitView={() => setIsSplitView(!isSplitView)}
+      />
+
+      {/* 4. MODALS */}
       <AgentBuilderModal
         isOpen={isAgentBuilderOpen}
         onClose={() => setIsAgentBuilderOpen(false)}
@@ -412,6 +485,35 @@ export function App() {
       <TokenCostMeter
         isOpen={isTokenMeterOpen}
         onClose={() => setIsTokenMeterOpen(false)}
+      />
+
+      <CommandPaletteModal
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onNavigateTab={(tab) => { setActiveTab(tab); }}
+        onOpenSimulator={() => setIsSimulatorOpen(true)}
+        onOpenAcademicSearch={() => setIsAcademicSearchOpen(true)}
+        onOpenTopology={() => setIsCircuitTopologyOpen(true)}
+        onOpenComparison={() => setIsRunComparisonOpen(true)}
+        onOpenThemeModal={() => setIsThemeModalOpen(true)}
+        onOpenTestModal={() => setIsFullTestOpen(true)}
+        onExportJupyter={handleExportJupyter}
+        onExportLatex={handleExportLatex}
+      />
+
+      <CircuitTopologyModal
+        isOpen={isCircuitTopologyOpen}
+        onClose={() => setIsCircuitTopologyOpen(false)}
+      />
+
+      <RunComparisonModal
+        isOpen={isRunComparisonOpen}
+        onClose={() => setIsRunComparisonOpen(false)}
+      />
+
+      <FullSystemTestModal
+        isOpen={isFullTestOpen}
+        onClose={() => setIsFullTestOpen(false)}
       />
     </div>
   );

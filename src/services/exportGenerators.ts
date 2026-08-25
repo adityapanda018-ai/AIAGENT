@@ -1,6 +1,10 @@
 // Multi-Format Exporters: Jupyter Notebook (.ipynb) and LaTeX IEEE Paper (.tex)
 
-export function generateJupyterNotebook(title: string, pythonCode: string, summary: string): string {
+export function generateJupyterNotebook(
+  title: string, 
+  pythonCode: string = '# NexusAI Loss Simulation\npower_kw = 100\nprint("Loss computation complete")', 
+  summary: string = 'Investigation research deliverable'
+): string {
   const notebook = {
     cells: [
       {
@@ -19,7 +23,7 @@ export function generateJupyterNotebook(title: string, pythonCode: string, summa
         execution_count: 1,
         metadata: {},
         outputs: [],
-        source: pythonCode.split('\n').map(line => line + '\n')
+        source: (pythonCode || '# Analysis script').split('\n').map(line => line + '\n')
       },
       {
         cell_type: 'markdown',
@@ -44,7 +48,11 @@ export function generateJupyterNotebook(title: string, pythonCode: string, summa
   return JSON.stringify(notebook, null, 2);
 }
 
-export function generateLatexPaper(title: string, summary: string, recommendation: string): string {
+export function generateLatexPaper(
+  title: string, 
+  summary: string = 'Synthesis of silicon carbide ANPC converters', 
+  recommendation: string = 'Recommended 3-level topology'
+): string {
   const cleanSummary = (summary || '').substring(0, 300);
   return [
     '\\documentclass[journal,10pt,twocolumn]{IEEEtran}',
