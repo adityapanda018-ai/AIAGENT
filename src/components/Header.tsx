@@ -1,5 +1,17 @@
-import { type FC, useState, useEffect } from 'react';
-import { Cpu, Key, Network, ShieldCheck, Palette, Activity, Search, Share2, DollarSign, Command, Zap, Layers, Compass } from 'lucide-react';
+import { type FC, useState } from 'react';
+import { 
+  Key, 
+  Palette, 
+  Activity, 
+  Search, 
+  Share2, 
+  DollarSign,
+  Zap, 
+  Layers, 
+  Compass, 
+  Command,
+  ShieldCheck
+} from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import type { UserProfile } from '../types/auth';
 import { SystemArchitectureModal } from './SystemArchitectureModal';
@@ -25,214 +37,157 @@ interface HeaderProps {
   onSignOut: () => void;
 }
 
-export const Header: FC<HeaderProps> = (props) => {
-  const {
-    userProfile,
-    onOpenSettings,
-    onOpenThemeModal,
-    onOpenSimulator,
-    onOpenAcademicSearch,
-    onOpenShareModal,
-    onOpenTokenMeter,
-    onOpenCommandPalette,
-    onOpenCircuitTopology,
-    onOpenRunComparison,
-    onOpenTour,
-    onOpenAuth,
-    onUpdateProfile,
-    onSignOut
-  } = props;
-
-  const [timeStr, setTimeStr] = useState<string>('');
+export const Header: FC<HeaderProps> = ({
+  userProfile,
+  onOpenSettings,
+  onOpenThemeModal,
+  onOpenSimulator,
+  onOpenAcademicSearch,
+  onOpenShareModal,
+  onOpenTokenMeter,
+  onOpenCommandPalette,
+  onOpenCircuitTopology,
+  onOpenRunComparison,
+  onOpenTour,
+  onOpenAuth,
+  onUpdateProfile,
+  onSignOut
+}) => {
   const [isArchModalOpen, setIsArchModalOpen] = useState<boolean>(false);
   const [isFullTestModalOpen, setIsFullTestModalOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    const update = () => setTimeStr(new Date().toTimeString().split(' ')[0].slice(0, 5));
-    update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <header className="border-b border-[#212936] bg-[#0F141C] select-none font-sans">
-      {/* Top Simplified Professional Bar */}
-      <div className="h-6 bg-[#161D27] border-b border-[#212936] px-4 flex items-center justify-between text-[11px] text-[#94A3B8] font-mono">
-        <div className="flex items-center gap-3 whitespace-nowrap">
-          <span className="text-[#F1F5F9] font-bold">
-            NEXUSAI RESEARCH WORKBENCH
-          </span>
-          <span className="text-[#212936]">|</span>
-          <span className="text-[#CBD5E1]">
-            INVESTIGATION <strong className="text-[#38BDF8]">0248</strong>
-          </span>
-          <span className="text-[#212936]">|</span>
-          <span className="text-[#10B981] font-bold bg-[#10B981]/10 px-1.5 py-0.2 rounded-sm border border-[#10B981]/30 flex items-center gap-1 font-sans text-[10px]">
-            <ShieldCheck className="w-3 h-3 text-[#10B981]" />
-            PRIMARY PRODUCTION WORKBENCH
-          </span>
-          <span className="text-[#212936]">|</span>
-          <span className="text-[#CBD5E1]">
-            LAST UPDATED: <strong className="text-[#94A3B8]">{timeStr || '20:05'}</strong>
-          </span>
-        </div>
-
-        <div className="flex items-center gap-3 text-[11px] whitespace-nowrap text-[#10B981] font-semibold">
-          {/* Quick Command Palette Keyboard Hint */}
-          <button
-            onClick={onOpenCommandPalette}
-            className="flex items-center gap-1 text-[10px] text-[#94A3B8] hover:text-[#38BDF8] bg-[#0F141C] border border-[#212936] px-2 py-0.2 rounded cursor-pointer transition-colors"
-          >
-            <Command className="w-3 h-3 text-[#38BDF8]" />
-            <span>Cmd/Ctrl + K</span>
-          </button>
-          <div className="flex items-center gap-1">
-            <span className="text-[10px]">●</span>
-            <span>SYSTEM OPERATIONAL</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Header */}
-      <div className="h-12 px-4 flex items-center justify-between">
-        {/* Brand & Subtitle */}
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#161D27] border border-[#38BDF8]/40 flex items-center justify-center rounded-sm shadow-md overflow-hidden p-1 group hover:border-[#38BDF8] transition-all">
-            <img src="/nexus-logo.svg" alt="NexusAI Logo" className="w-full h-full object-contain" />
+    <header className="border-b border-[#212936] bg-[#0F141C] select-none font-sans sticky top-0 z-40">
+      <div className="h-14 px-4 lg:px-6 flex items-center justify-between gap-4">
+        {/* Left: Brand & Active Investigation Indicator */}
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="w-8 h-8 rounded-md bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-[#38BDF8]/40 flex items-center justify-center p-1.5 shadow-sm">
+            <img src="/nexus-logo.svg" alt="NexusAI" className="w-full h-full object-contain" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-semibold text-xs text-[#F1F5F9] tracking-wide uppercase font-sans">
-                NEXUSAI RESEARCH WORKBENCH
-              </h1>
-              <span className="text-[9px] font-mono font-medium px-1.5 py-0.2 rounded-sm bg-[#161D27] text-[#10B981] border border-[#10B981]/30">
-                VERIFIED PROVENANCE
+              <span className="font-bold text-xs text-[#F1F5F9] tracking-wider uppercase">
+                NEXUS WORKBENCH
+              </span>
+              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-semibold flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+                Live
               </span>
             </div>
-            <p className="text-[11px] text-[#94A3B8] font-sans">
-              Research. Verify. Connect. Decide.
-            </p>
+            <span className="text-[10px] text-[#94A3B8] font-sans block">
+              Power Electronics Engineering Suite
+            </span>
           </div>
         </div>
 
-        {/* Workstation Controls */}
-        <div className="flex items-center gap-1.5 font-mono text-xs">
-          {/* Command Palette Button */}
-          <button
-            onClick={onOpenCommandPalette}
-            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
-            title="Open Command Palette (Ctrl + K)"
-          >
-            <Command className="w-3.5 h-3.5 text-[#38BDF8]" />
-            <span>[ ⌘K ]</span>
-          </button>
-
-          {/* Circuit Schematic Button */}
-          <button
-            onClick={onOpenCircuitTopology}
-            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#F59E0B]/50"
-            title="Inspect 3-Level ANPC Hardware Circuit Schematic"
-          >
-            <Zap className="w-3.5 h-3.5 text-[#F59E0B]" />
-            <span>[ CIRCUIT ]</span>
-          </button>
-
-          {/* Diff Matrix Button */}
-          <button
-            onClick={onOpenRunComparison}
-            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#10B981]/50"
-            title="Compare Investigation Runs (0248 vs 0247)"
-          >
-            <Layers className="w-3.5 h-3.5 text-[#10B981]" />
-            <span>[ DIFF ]</span>
-          </button>
-
-          {/* Engineering Simulator Button */}
+        {/* Center: Clean Segmented Engineering Workbenches */}
+        <div className="hidden md:flex items-center bg-[#161D27] border border-[#212936] p-1 rounded-md gap-1 font-mono text-xs shadow-inner">
           <button
             onClick={onOpenSimulator}
-            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
-            title="Open Interactive Engineering Loss & Thermal Simulator"
+            className="px-3 py-1 rounded text-[#CBD5E1] hover:text-[#38BDF8] hover:bg-[#0F141C] transition-all flex items-center gap-1.5 cursor-pointer text-[11px] font-medium"
+            title="Interactive Loss & Thermal Simulator"
           >
             <Activity className="w-3.5 h-3.5 text-[#38BDF8]" />
-            <span>[ SIM ]</span>
+            <span>Loss Simulator</span>
           </button>
 
-          {/* Academic Search Connector Button */}
+          <button
+            onClick={onOpenCircuitTopology}
+            className="px-3 py-1 rounded text-[#CBD5E1] hover:text-[#F59E0B] hover:bg-[#0F141C] transition-all flex items-center gap-1.5 cursor-pointer text-[11px] font-medium"
+            title="Interactive 3-Level ANPC Circuit Schematic"
+          >
+            <Zap className="w-3.5 h-3.5 text-[#F59E0B]" />
+            <span>Circuit ANPC</span>
+          </button>
+
+          <button
+            onClick={onOpenRunComparison}
+            className="px-3 py-1 rounded text-[#CBD5E1] hover:text-[#10B981] hover:bg-[#0F141C] transition-all flex items-center gap-1.5 cursor-pointer text-[11px] font-medium"
+            title="Side-by-Side Run Comparison Diff Matrix"
+          >
+            <Layers className="w-3.5 h-3.5 text-[#10B981]" />
+            <span>Run Diff</span>
+          </button>
+
           <button
             onClick={onOpenAcademicSearch}
-            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
-            title="Search arXiv, IEEE, PubMed & Semantic Scholar"
+            className="px-3 py-1 rounded text-[#CBD5E1] hover:text-[#818CF8] hover:bg-[#0F141C] transition-all flex items-center gap-1.5 cursor-pointer text-[11px] font-medium"
+            title="Academic IEEE DOI Search Connector"
           >
             <Search className="w-3.5 h-3.5 text-[#818CF8]" />
-            <span>[ ACADEMIC ]</span>
+            <span>Academic DOIs</span>
           </button>
+        </div>
 
-          {/* Share Dossier Button */}
+        {/* Right: Quick Tools, Command Palette & User Profile */}
+        <div className="flex items-center gap-2 font-mono shrink-0">
+          {/* Quick Search Launcher */}
           <button
-            onClick={onOpenShareModal}
-            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer hover:border-[#38BDF8]/50"
-            title="Generate Shareable Dossier Link & QR Code"
+            onClick={onOpenCommandPalette}
+            className="hidden sm:flex items-center gap-2 h-8 px-2.5 rounded border border-[#212936] bg-[#161D27] hover:border-[#38BDF8]/50 text-[#94A3B8] hover:text-[#F1F5F9] transition-all cursor-pointer text-[11px]"
+            title="Open Command Palette (Ctrl+K)"
           >
-            <Share2 className="w-3.5 h-3.5 text-[#10B981]" />
-            <span>[ SHARE ]</span>
+            <Command className="w-3.5 h-3.5 text-[#38BDF8]" />
+            <span>Search</span>
+            <kbd className="text-[9px] bg-[#0F141C] border border-[#212936] px-1 py-0.2 rounded text-[#94A3B8]">⌘K</kbd>
           </button>
 
-          {/* Live Token & Cost Meter Button */}
-          <button
-            onClick={onOpenTokenMeter}
-            className="btn-secondary py-1 px-2 text-[10px] font-mono font-bold flex items-center gap-1 cursor-pointer text-[#10B981] border-[#10B981]/30 bg-[#10B981]/10 hover:bg-[#10B981]/20"
-            title="View Real-Time Token Consumption & Cost Observability"
-          >
-            <DollarSign className="w-3 h-3 text-[#10B981]" />
-            <span>$0.034</span>
-          </button>
-
-          {/* Interactive Onboarding Tour Button */}
-          <button
-            onClick={onOpenTour}
-            className="btn-secondary py-1 px-2 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer text-[#38BDF8] border-[#38BDF8]/40 hover:border-[#38BDF8] bg-[#38BDF8]/10"
-            title="Launch Interactive Product Tour & Onboarding Guide"
-          >
-            <Compass className="w-3.5 h-3.5 text-[#38BDF8]" />
-            <span>[ TOUR ]</span>
-          </button>
-
-          {/* [RUN ALL TESTS] System Verification Button */}
+          {/* Verification Suite */}
           <button
             onClick={() => setIsFullTestModalOpen(true)}
-            className="btn-primary py-1 px-2.5 text-[11px] bg-[#10B981] hover:bg-[#059669] text-[#0F141C] border-[#10B981] font-bold flex items-center gap-1 font-sans cursor-pointer"
-            title="Run Complete 14-Point System Verification Suite"
+            className="h-8 px-2.5 rounded bg-[#10B981]/15 text-[#10B981] hover:bg-[#10B981]/25 border border-[#10B981]/40 font-bold flex items-center gap-1.5 cursor-pointer transition-all text-[11px]"
+            title="Run 14-Point Automated Verification Suite"
           >
-            <Cpu className="w-3.5 h-3.5" />
-            <span>[ TESTS ]</span>
+            <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" />
+            <span className="hidden sm:inline">Verify</span>
           </button>
 
+          {/* Share Investigation */}
           <button
-            onClick={() => setIsArchModalOpen(true)}
-            className="p-1.5 rounded-sm bg-[#161D27] hover:bg-[#212936] text-[#CBD5E1] border border-[#212936] transition-colors text-[10px] flex items-center gap-1 cursor-pointer"
-            title="System Architecture Diagram"
+            onClick={onOpenShareModal}
+            className="h-8 w-8 rounded border border-[#212936] hover:border-[#10B981]/50 bg-[#161D27] text-[#94A3B8] hover:text-[#10B981] flex items-center justify-center transition-all cursor-pointer"
+            title="Generate Shareable Link & QR Code"
           >
-            <Network className="w-3.5 h-3.5 text-[#38BDF8]" />
+            <Share2 className="w-3.5 h-3.5" />
           </button>
 
-          {/* UI Theme, Background & Highlight Customizer Button */}
+          {/* Token & Cost Meter */}
+          <button
+            onClick={onOpenTokenMeter}
+            className="h-8 w-8 rounded border border-[#212936] hover:border-[#38BDF8]/50 bg-[#161D27] text-[#94A3B8] hover:text-[#38BDF8] flex items-center justify-center transition-all cursor-pointer"
+            title="API Cost & Token Usage Telemetry"
+          >
+            <DollarSign className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Tour Guide */}
+          <button
+            onClick={onOpenTour}
+            className="h-8 w-8 rounded border border-[#212936] hover:border-[#38BDF8]/50 bg-[#161D27] text-[#94A3B8] hover:text-[#38BDF8] flex items-center justify-center transition-all cursor-pointer"
+            title="Product Tour & Onboarding"
+          >
+            <Compass className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Theme Palette */}
           <button
             onClick={onOpenThemeModal}
-            className="p-1.5 rounded-sm bg-[#161D27] hover:bg-[#212936] text-[#CBD5E1] border border-[#212936] transition-colors text-[10px] flex items-center gap-1 cursor-pointer"
-            title="Customize Themes, Background Textures & Highlight Accents"
+            className="h-8 w-8 rounded border border-[#212936] hover:border-[#38BDF8]/50 bg-[#161D27] text-[#94A3B8] hover:text-[#38BDF8] flex items-center justify-center transition-all cursor-pointer"
+            title="Themes, Particles & Scanline HUD"
           >
-            <Palette className="w-3.5 h-3.5 text-[#38BDF8]" />
+            <Palette className="w-3.5 h-3.5" />
           </button>
 
+          {/* System Settings */}
           <button
             onClick={onOpenSettings}
-            className="p-1.5 rounded-sm bg-[#161D27] hover:bg-[#212936] text-[#CBD5E1] border border-[#212936] transition-colors text-[10px] flex items-center gap-1 cursor-pointer"
-            title="API Settings & Domain Setup"
+            className="h-8 w-8 rounded border border-[#212936] hover:border-[#38BDF8]/50 bg-[#161D27] text-[#94A3B8] hover:text-[#F59E0B] flex items-center justify-center transition-all cursor-pointer"
+            title="API Keys & Workspace Settings"
           >
-            <Key className="w-3.5 h-3.5 text-[#F59E0B]" />
+            <Key className="w-3.5 h-3.5" />
           </button>
 
-          {/* User Profile, Role Switcher & Subscription Dropdown */}
+          {/* User Profile Monogram Pill */}
           <UserProfileDropdown
             profile={userProfile}
             onOpenAuth={onOpenAuth}
@@ -255,4 +210,3 @@ export const Header: FC<HeaderProps> = (props) => {
   );
 };
 export default Header;
-
