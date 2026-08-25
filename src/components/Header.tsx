@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Cpu, Key, Database, Network, Info, Play, Palette } from 'lucide-react';
+import { Cpu, Key, Database, Network, Info, Play, Palette, Mic } from 'lucide-react';
 import type { ApiSettings } from '../types/agent';
 import { SystemArchitectureModal } from './SystemArchitectureModal';
 import { WinningDemoScriptModal } from './WinningDemoScriptModal';
 import { FullSystemTestModal } from './FullSystemTestModal';
+import { VoiceAssistantModal } from './VoiceAssistantModal';
 
 interface HeaderProps {
   settings: ApiSettings;
   onOpenSettings: () => void;
   onOpenAgentBuilder: () => void;
   onRunDemoStep?: (stepIndex: number) => void;
+  onRunPrompt?: (promptText: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   settings: _settings,
   onOpenSettings,
   onOpenAgentBuilder: _onOpenAgentBuilder,
-  onRunDemoStep = () => {}
+  onRunDemoStep = () => {},
+  onRunPrompt = () => {}
 }) => {
   const [timeStr, setTimeStr] = useState<string>('');
   const [isArchModalOpen, setIsArchModalOpen] = useState<boolean>(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
   const [isFullTestModalOpen, setIsFullTestModalOpen] = useState<boolean>(false);
+  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState<boolean>(false);
   const [currentTheme, setCurrentTheme] = useState<string>('dark');
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState<boolean>(false);
 
@@ -115,6 +119,16 @@ export const Header: React.FC<HeaderProps> = ({
             <span>[ DEMO SCRIPT ]</span>
           </button>
 
+          {/* Voice AI Assistant Button */}
+          <button
+            onClick={() => setIsVoiceModalOpen(true)}
+            className="btn-secondary py-1 px-3 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer bg-[#38BDF8]/10 text-[#38BDF8] border-[#38BDF8]/30 hover:bg-[#38BDF8]/20"
+            title="Open Hands-Free Voice AI Assistant"
+          >
+            <Mic className="w-3.5 h-3.5 text-[#38BDF8] animate-pulse" />
+            <span>[ VOICE AI ]</span>
+          </button>
+
           <button
             onClick={() => setIsArchModalOpen(true)}
             className="btn-secondary py-1 px-3 text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer"
@@ -192,6 +206,12 @@ export const Header: React.FC<HeaderProps> = ({
       <FullSystemTestModal
         isOpen={isFullTestModalOpen}
         onClose={() => setIsFullTestModalOpen(false)}
+      />
+
+      <VoiceAssistantModal
+        isOpen={isVoiceModalOpen}
+        onClose={() => setIsVoiceModalOpen(false)}
+        onRunPrompt={onRunPrompt}
       />
     </header>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Square, BookOpen, HelpCircle, GitBranch, Sparkles } from 'lucide-react';
+import { Play, Square, BookOpen, HelpCircle, GitBranch, Sparkles, Mic, Volume2, VolumeX } from 'lucide-react';
 import type { Agent, ExecutionStep } from '../types/agent';
 import { ClaimTraceDrawer } from './ClaimTraceDrawer';
 import { EvidenceLibraryModal } from './EvidenceLibraryModal';
@@ -8,6 +8,7 @@ import { WhyConclusionModal } from './WhyConclusionModal';
 import { EvidenceGraphModal } from './EvidenceGraphModal';
 import { QuestionAnalysisModal } from './QuestionAnalysisModal';
 import { resolveDomainEvidence } from '../services/evidenceDatabase';
+import { voiceEngine } from '../services/voiceService';
 
 interface ResearchDeskProps {
   selectedAgent: Agent;
@@ -36,6 +37,8 @@ export const ResearchDesk: React.FC<ResearchDeskProps> = ({
   const [activeGraphModal, setActiveGraphModal] = useState<boolean>(false);
   const [activeQuestionModal, setActiveQuestionModal] = useState<boolean>(false);
   const [selectedClaimId, setSelectedClaimId] = useState<string>('CLAIM C-014');
+  const [isSpeakingFindings, setIsSpeakingFindings] = useState<boolean>(false);
+  const [isListeningDictation, setIsListeningDictation] = useState<boolean>(false);
 
   const scopeOptions = ['Technical', 'Literature', 'Experimental', 'Market'];
 
@@ -43,6 +46,31 @@ export const ResearchDesk: React.FC<ResearchDeskProps> = ({
     setSelectedScope(prev => 
       prev.includes(scope) ? prev.filter(s => s !== scope) : [...prev, scope]
     );
+  };
+
+  const handleVoiceDictation = () => {
+    if (isListeningDictation) {
+      voiceEngine.stopListening();
+      setIsListeningDictation(false);
+    } else {
+      setIsListeningDictation(true);
+      voiceEngine.startListening(
+        (text) => onPromptChange(text),
+        () => setIsListeningDictation(false),
+        () => setIsListeningDictation(false)
+      );
+    }
+  };
+
+  const handleSpeakSummary = (textToSpeak?: string) => {
+    if (isSpeakingFindings) {
+      voiceEngine.stopSpeaking();
+      setIsSpeakingFindings(false);
+    } else {
+      setIsSpeakingFindings(true);
+      const speech = textToSpeak || `${domainData.domain} Investigation summary: ${domainData.recommendationText}. Key claims verified.`;
+      voiceEngine.speak(speech, () => setIsSpeakingFindings(false));
+    }
   };
 
   const handleStart = () => {
@@ -88,13 +116,25 @@ export const ResearchDesk: React.FC<ResearchDeskProps> = ({
           </span>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-1.5 relative">
           <textarea
             value={taskPrompt}
             onChange={(e) => onPromptChange(e.target.value)}
             placeholder="Enter your technical research question... (e.g. What are the most effective AI methods for detecting micro-bending and gradual attenuation in optical fiber networks?)"
-            className="w-full bg-[#0F141C] border border-[#212936] rounded-sm p-3 text-xs text-[#F1F5F9] placeholder-[#94A3B8]/60 focus:outline-none focus:border-[#38BDF8] min-h-[65px] resize-y font-sans leading-relaxed"
+            className="w-full bg-[#0F141C] border border-[#212936] rounded-sm p-3 pr-10 text-xs text-[#F1F5F9] placeholder-[#94A3B8]/60 focus:outline-none focus:border-[#38BDF8] min-h-[65px] resize-y font-sans leading-relaxed"
           />
+
+          <button
+            onClick={handleVoiceDictation}
+            className={`absolute right-2 top-2 p-1.5 rounded transition-all cursor-pointer ${
+              isListeningDictation
+                ? 'bg-[#38BDF8] text-[#0F141C] animate-pulse'
+                : 'bg-[#161D27] text-[#94A3B8] hover:text-[#38BDF8] border border-[#212936]'
+            }`}
+            title={isListeningDictation ? 'Listening to your voice...' : 'Click to dictate prompt using voice'}
+          >
+            <Mic className="w-4 h-4" />
+          </button>
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-2 pt-1 font-mono text-[11px]">
@@ -178,13 +218,28 @@ export const ResearchDesk: React.FC<ResearchDeskProps> = ({
           <div className="flex items-center justify-between border-b border-[#212936] pb-2 font-mono">
             <h3 className="font-bold text-xs text-[#F59E0B] uppercase tracking-wider">FINDINGS & DECISION</h3>
             
-            <button
-              onClick={() => setActiveWhyModal(true)}
-              className="px-2 py-0.5 rounded-sm bg-[#38BDF8]/10 text-[#38BDF8] hover:bg-[#38BDF8]/20 border border-[#38BDF8]/40 font-mono text-[9px] font-bold flex items-center gap-1 cursor-pointer"
-            >
-              <HelpCircle className="w-3 h-3" />
-              <span>[ WHY THIS CONCLUSION? ]</span>
-            </button>
+            <div className="flex items-center gap-1.5 font-sans">
+              <button
+                onClick={() => handleSpeakSummary()}
+                className={`px-2 py-0.5 rounded-sm font-mono text-[9px] font-bold flex items-center gap-1 cursor-pointer transition-all ${
+                  isSpeakingFindings
+                    ? 'bg-[#10B981] text-[#0F141C] border border-[#10B981]'
+                    : 'bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981]/20 border border-[#10B981]/40'
+                }`}
+                title={isSpeakingFindings ? 'Stop Voice Readout' : 'Listen to AI Voice Findings Readout'}
+              >
+                {isSpeakingFindings ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
+                <span>{isSpeakingFindings ? '[ STOP AUDIO ]' : '[ LISTEN FINDINGS ]'}</span>
+              </button>
+
+              <button
+                onClick={() => setActiveWhyModal(true)}
+                className="px-2 py-0.5 rounded-sm bg-[#38BDF8]/10 text-[#38BDF8] hover:bg-[#38BDF8]/20 border border-[#38BDF8]/40 font-mono text-[9px] font-bold flex items-center gap-1 cursor-pointer"
+              >
+                <HelpCircle className="w-3 h-3" />
+                <span>[ WHY THIS CONCLUSION? ]</span>
+              </button>
+            </div>
           </div>
 
           <div className="space-y-2 text-[11px] text-[#F1F5F9] font-sans">
