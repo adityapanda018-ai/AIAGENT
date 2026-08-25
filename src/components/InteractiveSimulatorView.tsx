@@ -53,7 +53,7 @@ export const InteractiveSimulatorView: FC = () => {
     setTimeout(() => setIsSimulating(false), 600);
   };
 
-  const generatedPythonSnippet = `# NexusAI Accurate Semiconductor Physics Loss Model
+  const generatedPythonSnippet = `# Silicon Carbide (SiC) 3-Level ANPC Semiconductor Physics Model
 import numpy as np
 
 power_kw = ${powerKw}
@@ -370,12 +370,12 @@ print(f"Efficiency: {efficiency:.2f}% | Total Loss: {total_loss/1000:.2f} kW | T
             </div>
           </div>
 
-          {/* Generated Python Simulation Script */}
+          {/* Computational Python Script */}
           <div className="p-4 bg-[#0F141C] border border-[#212936] rounded-sm space-y-2 font-mono flex-1 flex flex-col">
             <div className="flex items-center justify-between border-b border-[#212936] pb-2">
               <span className="font-bold text-xs text-[#F1F5F9] flex items-center gap-1.5">
                 <Cpu className="w-4 h-4 text-[#818CF8]" />
-                GENERATED NUMERICAL SIMULATION SCRIPT
+                NUMERICAL CALCULATION SCRIPT (PYTHON 3.11)
               </span>
               <button
                 onClick={handleCopyCode}

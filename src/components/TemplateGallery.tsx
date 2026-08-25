@@ -10,7 +10,7 @@ interface TemplateGalleryProps {
 
 const SAMPLE_PROMPTS: Record<string, string> = {
   'agent-apex': 'Perform an architectural verification audit on a reactive state management pipeline in TypeScript.',
-  'agent-nova': 'Synthesize a competitive intelligence research report on open-source AI agent verification frameworks.',
+  'agent-nova': 'Synthesize a competitive technical intelligence report on grid-tied multi-megawatt inverter converter topologies.',
   'agent-datapulse': 'Construct a quantitative revenue forecasting model and render a telemetry bar graph.',
   'agent-vortex': 'Evaluate risk trade-offs and deployment specifications for an enterprise multi-cloud transition.'
 };
