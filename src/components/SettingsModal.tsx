@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Key, ShieldCheck, Check, Trash2 } from 'lucide-react';
+import { X, Key, ShieldCheck, Check, Trash2, Globe } from 'lucide-react';
 import type { ApiSettings, LLMModel } from '../types/agent';
 
 interface SettingsModalProps {
@@ -194,6 +194,30 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 className="w-4 h-4 accent-amber-500 rounded cursor-pointer"
               />
             </div>
+          </div>
+
+          {/* Custom Domain Setup Section */}
+          <div className="p-3 rounded bg-[#0b1018] border border-[#1e2738] space-y-2">
+            <div className="flex items-center gap-1.5 text-sky-400 font-bold text-[11px]">
+              <Globe className="w-3.5 h-3.5" />
+              <span>VERCEL CUSTOM DOMAIN DNS SETUP</span>
+            </div>
+            <p className="text-[9.5px] text-slate-400">
+              To connect your own domain (e.g. <code className="text-amber-400">nexus-ai.com</code>) to your Vercel site:
+            </p>
+            <div className="bg-[#04060a] p-2 rounded border border-[#1e2330] font-mono text-[9px] space-y-1">
+              <div className="flex justify-between text-slate-300">
+                <span className="text-emerald-400">A Record:</span>
+                <span>@ ➔ 76.76.21.21</span>
+              </div>
+              <div className="flex justify-between text-slate-300">
+                <span className="text-emerald-400">CNAME Record:</span>
+                <span>www ➔ cname.vercel-dns.com</span>
+              </div>
+            </div>
+            <p className="text-[9px] text-slate-500">
+              Configure DNS records at your domain registrar (GoDaddy, Namecheap, Cloudflare), then add the domain under Vercel Settings ➔ Domains.
+            </p>
           </div>
         </div>
 

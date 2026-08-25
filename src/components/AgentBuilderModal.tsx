@@ -36,6 +36,41 @@ const ROLES: AgentRole[] = [
   'Custom'
 ];
 
+const DOMAIN_PRESETS = [
+  {
+    name: 'Aegis Security',
+    role: 'Systems Architecture' as AgentRole,
+    avatar: 'Shield',
+    description: 'Cybersecurity vulnerability audit & threat vector specialist.',
+    systemPrompt: 'You are Aegis, Cybersecurity Specialist. Analyze zero-day threat vectors, system architecture vulnerabilities, and compliance policies.',
+    tools: ['code_interpreter', 'knowledge_vector_search', 'api_caller']
+  },
+  {
+    name: 'BioNova Research',
+    role: 'Technical Research' as AgentRole,
+    avatar: 'Search',
+    description: 'Genomic literature search & clinical trial data extraction specialist.',
+    systemPrompt: 'You are BioNova, Biomedical Literature Specialist. Extract clinical trial outcomes, DOI citations, and primary medical literature claims.',
+    tools: ['paper_fetcher', 'citation_graph', 'web_search']
+  },
+  {
+    name: 'QuantPulse Risk',
+    role: 'Quantitative Analysis' as AgentRole,
+    avatar: 'BarChart2',
+    description: 'Financial portfolio risk modeling & Monte Carlo statistical specialist.',
+    systemPrompt: 'You are QuantPulse, Quantitative Risk Specialist. Execute loss calculations, regression modeling, and statistical anomaly detection.',
+    tools: ['code_interpreter', 'stat_calculator', 'data_plotter']
+  },
+  {
+    name: 'Vortex Synthesizer',
+    role: 'Technical Writing' as AgentRole,
+    avatar: 'Terminal',
+    description: 'Multi-specialist synthesis & executive research dossier publisher.',
+    systemPrompt: 'You are Vortex, Technical Synthesis Specialist. Consolidate findings from multiple agents into executive decision dossiers.',
+    tools: ['dossier_generator', 'pdf_exporter']
+  }
+];
+
 export const AgentBuilderModal: React.FC<AgentBuilderModalProps> = ({
   isOpen,
   onClose,
@@ -53,6 +88,15 @@ export const AgentBuilderModal: React.FC<AgentBuilderModalProps> = ({
   const [memoryContextSize, setMemoryContextSize] = useState(initialAgent?.memoryContextSize || 128);
 
   if (!isOpen) return null;
+
+  const applyPreset = (preset: typeof DOMAIN_PRESETS[0]) => {
+    setName(preset.name);
+    setRole(preset.role);
+    setAvatar(preset.avatar);
+    setDescription(preset.description);
+    setSystemPrompt(preset.systemPrompt);
+    setSelectedTools(preset.tools);
+  };
 
   const toggleTool = (toolId: string) => {
     setSelectedTools(prev => 
@@ -98,6 +142,25 @@ export const AgentBuilderModal: React.FC<AgentBuilderModalProps> = ({
 
         {/* Form Body */}
         <div className="p-4 overflow-y-auto space-y-3 text-xs text-slate-300">
+          {/* Quick Domain Presets */}
+          <div className="p-2.5 bg-[#0e121a] border border-[#1e2330] rounded-sm space-y-1.5">
+            <label className="block text-[10px] font-bold text-amber-400 uppercase tracking-wider">
+              1-CLICK DOMAIN PRESETS
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 font-sans text-[10px]">
+              {DOMAIN_PRESETS.map((preset) => (
+                <button
+                  key={preset.name}
+                  type="button"
+                  onClick={() => applyPreset(preset)}
+                  className="px-2 py-1 bg-[#161d28] hover:bg-[#212b3a] border border-[#212936] rounded text-slate-200 text-left transition-colors font-mono cursor-pointer"
+                >
+                  <div className="font-bold text-sky-400">{preset.name}</div>
+                  <div className="text-[9px] text-slate-400 truncate">{preset.role}</div>
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
             <div className="sm:col-span-1">
               <label className="block text-[10px] font-bold text-slate-400 mb-1">MODULE ICON</label>

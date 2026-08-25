@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Database, Plus, Trash2, ShieldCheck, Table, FileText, CheckCircle2 } from 'lucide-react';
+import { Database, Plus, Trash2, ShieldCheck, Table, FileText, Upload, CheckCircle2 } from 'lucide-react';
 import type { KnowledgeDocument, Agent } from '../types/agent';
 import { relationalEvidenceDB } from '../services/evidenceDatabase';
 
@@ -21,6 +21,22 @@ export const KnowledgeBase: React.FC<KnowledgeBaseProps> = ({
   const [newCategory, setNewCategory] = useState('Literature');
   const [newContent, setNewContent] = useState('');
   const [activeTable, setActiveTable] = useState<'claims' | 'evidence' | 'verification'>('claims');
+  const [uploadFileName, setUploadFileName] = useState<string>('');
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadFileName(file.name);
+    setNewTitle(file.name.replace(/\.[^/.]+$/, ""));
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      setNewContent(text || `Extracted document stream from ${file.name} (${file.size} bytes).`);
+    };
+    reader.readAsText(file);
+  };
 
   const handleAdd = () => {
     if (!newTitle.trim()) return;
@@ -37,6 +53,7 @@ export const KnowledgeBase: React.FC<KnowledgeBaseProps> = ({
     setShowAddModal(false);
     setNewTitle('');
     setNewContent('');
+    setUploadFileName('');
   };
 
   const totalTokens = documents.reduce((sum, d) => sum + d.tokenCount, 0);
@@ -226,34 +243,50 @@ export const KnowledgeBase: React.FC<KnowledgeBaseProps> = ({
       {/* Add Document Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
-          <div className="bg-[#161D27] border border-[#212936] rounded-sm p-4 max-w-md w-full space-y-3 font-sans">
-            <h3 className="text-xs font-bold text-[#F1F5F9] font-mono">INGEST DOCUMENT TO KNOWLEDGE INDEX</h3>
+          <div className="bg-[#161D27] border border-[#212936] rounded-sm p-5 max-w-md w-full space-y-4 font-sans shadow-2xl">
+            <h3 className="text-xs font-bold text-[#F1F5F9] font-mono uppercase tracking-wider">INGEST PDF / LITERATURE / DATASHEET TO INDEX</h3>
+            
+            {/* File Dropzone */}
+            <div className="border-2 border-dashed border-[#212936] hover:border-[#38BDF8] rounded-sm p-4 text-center cursor-pointer bg-[#0F141C] transition-colors relative">
+              <input
+                type="file"
+                accept=".pdf,.txt,.json,.csv,.md,.pdf"
+                onChange={handleFileUpload}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+              <Upload className="w-6 h-6 text-[#38BDF8] mx-auto mb-1" />
+              <p className="text-xs font-bold text-[#F1F5F9]">
+                {uploadFileName ? uploadFileName : 'Drop PDF, Datasheet, or Paper here'}
+              </p>
+              <p className="text-[10px] text-[#94A3B8] mt-0.5 font-mono">Supports .pdf, .txt, .md, .csv, .json</p>
+            </div>
+
             <input
               type="text"
               placeholder="Document Title"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              className="w-full glass-input text-xs"
+              className="w-full glass-input text-xs p-2"
             />
             <select
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
-              className="w-full glass-input text-xs bg-[#0F141C]"
+              className="w-full glass-input text-xs p-2 bg-[#0F141C]"
             >
-              <option value="Literature">Literature</option>
-              <option value="Datasheets">Datasheets</option>
-              <option value="Datasets">Datasets</option>
+              <option value="Literature">Literature Primary Paper</option>
+              <option value="Datasheets">Semiconductor Datasheet</option>
+              <option value="Datasets">Experimental Dataset</option>
             </select>
             <textarea
               rows={4}
-              placeholder="Document Content Excerpt..."
+              placeholder="Document Content Excerpt or Raw Text..."
               value={newContent}
               onChange={(e) => setNewContent(e.target.value)}
-              className="w-full glass-input text-xs resize-none"
+              className="w-full glass-input text-xs p-2 resize-none"
             />
-            <div className="flex justify-end gap-2 font-mono">
-              <button onClick={() => setShowAddModal(false)} className="btn-secondary text-xs">CANCEL</button>
-              <button onClick={handleAdd} className="btn-primary text-xs">INGEST</button>
+            <div className="flex justify-end gap-2 font-mono pt-1">
+              <button onClick={() => setShowAddModal(false)} className="btn-secondary text-xs px-3 py-1.5">CANCEL</button>
+              <button onClick={handleAdd} className="btn-primary text-xs px-4 py-1.5">INGEST & INDEX</button>
             </div>
           </div>
         </div>

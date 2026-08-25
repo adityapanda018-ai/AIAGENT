@@ -43,60 +43,90 @@
 
 /* Quiet Dark Theme Design System Utility Tokens */
 .glass-card {
-  background: #161D27;
-  border: 1px solid #212936;
+  background: var(--bg-card, #161D27);
+  border: 1px solid var(--border-color, #212936);
 }
 
 .glass-panel {
-  background: #0F141C;
-  border: 1px solid #212936;
+  background: var(--bg-panel, #0F141C);
+  border: 1px solid var(--border-color, #212936);
 }
 
 .glass-input {
-  background: #0F141C;
-  border: 1px solid #212936;
-  color: #F1F5F9;
+  background: var(--bg-panel, #0F141C);
+  border: 1px solid var(--border-color, #212936);
+  color: var(--text-primary, #F1F5F9);
 }
 
 .glass-input:focus {
-  border-color: #38BDF8;
+  border-color: var(--accent-color, #38BDF8);
   outline: none;
 }
 
 .btn-primary {
-  background-color: #38BDF8;
+  background-color: var(--accent-color, #38BDF8);
   color: #0F141C;
   font-weight: 700;
   border-radius: 2px;
-  border: 1px solid #38BDF8;
+  border: 1px solid var(--accent-color, #38BDF8);
   transition: all 0.15s ease;
   display: inline-flex;
-  items-center: center;
+  align-items: center;
   gap: 0.375rem;
 }
 
 .btn-primary:hover {
-  background-color: #0284c7;
-  border-color: #0284c7;
+  filter: brightness(1.1);
   color: #ffffff;
 }
 
 .btn-secondary {
-  background-color: #0F141C;
-  color: #CBD5E1;
-  border: 1px solid #212936;
+  background-color: var(--bg-panel, #0F141C);
+  color: var(--text-secondary, #CBD5E1);
+  border: 1px solid var(--border-color, #212936);
   border-radius: 2px;
   font-weight: 600;
   transition: all 0.15s ease;
   display: inline-flex;
-  items-center: center;
+  align-items: center;
   gap: 0.375rem;
 }
 
 .btn-secondary:hover {
-  background-color: #161D27;
-  color: #F1F5F9;
-  border-color: #38BDF8;
+  background-color: var(--bg-card, #161D27);
+  color: var(--text-primary, #F1F5F9);
+  border-color: var(--accent-color, #38BDF8);
+}
+
+/* Theme Variations */
+[data-theme="emerald"] {
+  --bg-main: #061A14;
+  --bg-card: #0D2820;
+  --bg-panel: #061A14;
+  --border-color: #164E3D;
+  --text-primary: #ECFDF5;
+  --text-secondary: #A7F3D0;
+  --accent-color: #10B981;
+}
+
+[data-theme="amber"] {
+  --bg-main: #1C1306;
+  --bg-card: #281C0B;
+  --bg-panel: #1C1306;
+  --border-color: #452D0A;
+  --text-primary: #FFFBEB;
+  --text-secondary: #FDE68A;
+  --accent-color: #F59E0B;
+}
+
+[data-theme="light"] {
+  --bg-main: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-panel: #F1F5F9;
+  --border-color: #CBD5E1;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --accent-color: #0284C7;
 }
 
 /* User Specification: Phase 19 Clean PDF Export Print Styles */
