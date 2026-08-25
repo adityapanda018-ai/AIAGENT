@@ -17,7 +17,6 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  avatarUrl: string;
   role: UserRole;
   tier: UserTier;
   organization: string;

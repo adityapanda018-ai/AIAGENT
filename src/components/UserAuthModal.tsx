@@ -89,7 +89,6 @@ export const UserAuthModal: FC<UserAuthModalProps> = ({
         id: `usr-${Date.now()}`,
         name: fullName || email.split('@')[0] || 'Research Engineer',
         email: email,
-        avatarUrl: DEFAULT_PRO_PROFILE.avatarUrl,
         role: selectedRole,
         tier: 'Pro Researcher',
         organization: organization || 'Hyperion Energy Labs',

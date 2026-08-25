@@ -61,9 +61,9 @@ export const UserProfileDropdown: FC<UserProfileDropdownProps> = ({
         className="h-8 px-2.5 rounded-sm border border-[#212936] hover:border-[#38BDF8]/60 bg-[#161D27] text-left flex items-center gap-2 transition-all cursor-pointer shadow-sm"
         title="User Profile & Organization Workspace"
       >
-        <div className="w-5 h-5 rounded-full overflow-hidden border border-[#38BDF8]/50 bg-[#0F141C] flex items-center justify-center shrink-0">
+        <div className="w-5 h-5 rounded-full border border-[#38BDF8]/50 bg-[#38BDF8]/15 text-[#38BDF8] flex items-center justify-center shrink-0 font-bold text-[9px]">
           {profile.isLoggedIn ? (
-            <img src={profile.avatarUrl} alt={profile.name} className="w-full h-full object-cover" />
+            profile.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('') || 'AP'
           ) : (
             <User className="w-3 h-3 text-[#94A3B8]" />
           )}
@@ -92,8 +92,8 @@ export const UserProfileDropdown: FC<UserProfileDropdownProps> = ({
         <div className="absolute right-0 top-full mt-1.5 w-72 bg-[#161D27]/98 backdrop-blur-md border border-[#38BDF8]/40 rounded-sm shadow-2xl z-50 p-3 space-y-3 animate-fade-in text-xs font-mono">
           {/* User Details Header */}
           <div className="flex items-start gap-2.5 border-b border-[#212936] pb-2.5">
-            <div className="w-9 h-9 rounded-full overflow-hidden border border-[#38BDF8] bg-[#0F141C] shrink-0">
-              <img src={profile.avatarUrl} alt={profile.name} className="w-full h-full object-cover" />
+            <div className="w-8 h-8 rounded-full border border-[#38BDF8] bg-[#38BDF8]/20 text-[#38BDF8] flex items-center justify-center shrink-0 font-bold text-xs">
+              {profile.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('') || 'AP'}
             </div>
             <div className="overflow-hidden space-y-0.5">
               <span className="font-bold text-xs text-[#F1F5F9] block truncate">{profile.name}</span>
