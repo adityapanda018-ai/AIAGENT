@@ -52,7 +52,7 @@ export const Sidebar: FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="w-60 h-full bg-[#0F141C] border-r border-[#212936] flex flex-col justify-between p-3 select-none text-xs font-sans overflow-y-auto shrink-0 space-y-4">
+    <aside className="w-64 h-full bg-[#0F141C] border-r border-[#212936] flex flex-col justify-between px-3.5 py-3 select-none text-xs font-sans overflow-y-auto overflow-x-hidden shrink-0 space-y-4">
       <div className="space-y-4">
         {/* SECTION 1: WORKBENCH */}
         <div className="space-y-1">
